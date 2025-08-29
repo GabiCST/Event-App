@@ -24,7 +24,7 @@
             <Button
                 Grid.Row="0"
                 Grid.Column="0"
-                Content="Available Tickets For All Events"
+                Content="Available tickets for all events"
                 Width="290"
                 Height="50"
                 Margin="10"
@@ -32,7 +32,7 @@
             <Button
                 Grid.Row="1"
                 Grid.Column="0"
-                Content="Book Your Favorite Events"
+                Content="Book your favorite events"
                 Width="250"
                 Height="50"
                 Margin="10"
@@ -40,7 +40,7 @@
             <Button
                 Grid.Row="2"
                 Grid.Column="0"
-                Content="Available Tickets For Favorite Events"
+                Content="Available tickets for favorite events"
                 Width="350"
                 Height="50"
                 Margin="10"
@@ -48,7 +48,7 @@
             <Button
                 Grid.Row="3"
                 Grid.Column="0"
-                Content="Buy A Ticket"
+                Content="Buy a ticket"
                 Width="140"
                 Height="30"
                 Margin="10"
@@ -56,7 +56,7 @@
             <Button
                 Grid.Row="4"
                 Grid.Column="0"
-                Content="Cancel A Ticket"
+                Content="Cancel a ticket"
                 Width="150"
                 Height="30"
                 Margin="10"
@@ -64,7 +64,7 @@
             <Button
                 Grid.Row="5"
                 Grid.Column="0"
-                Content="View All Booked Tickets"
+                Content="View all booked tickets"
                 Width="230"
                 Height="30"
                 Margin="10"
@@ -72,7 +72,7 @@
             <Button
                 Grid.Row="6"
                 Grid.Column="0"
-                Content="Log Out"
+                Content="Log out"
                 Width="120"
                 Height="30"
                 Margin="10"
