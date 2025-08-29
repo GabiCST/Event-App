@@ -6,7 +6,117 @@
         xmlns:local="clr-namespace:Event_App"
         mc:Ignorable="d"
         Title="CheckFavoriteEvents" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <StackPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="200" />
+            </Grid.RowDefinitions>
+            <Label
+                Name="Favorite_events"
+                Grid.Row="0"
+                Margin="2,4,250,4"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="Favorite events"
+                FontSize="30" />
+            <ComboBox
+                Name="TypeComboBox"
+                Grid.Row="0"
+                Width="200"
+                Height="25"
+                Margin="80,10,-100,1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <ComboBoxItem Content="Films" />
+                <ComboBoxItem Content="Music" />
+                <ComboBoxItem Content="Art" />
+                <ComboBoxItem Content="Theatre"/>
+                <ComboBoxItem Content="Sports" />
+                <ComboBoxItem Content="Technology"/>
+            </ComboBox>
+            <Label
+                Name="Event_date"
+                Grid.Row="1"
+                Margin="2,4,250,4"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="Event date"
+                FontSize="30" />
+            <ComboBox
+                Name="EventDateComboBox"
+                Grid.Row="1"
+                Width="200"
+                Height="25"
+                Margin="20,10,-100,1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <ComboBoxItem Content="Date 1" />
+                <ComboBoxItem Content="Date 2" />
+                <ComboBoxItem Content="Date 3" />
+            </ComboBox>
+            <Label
+                Name="Time"
+                Grid.Row="2"
+                Margin="2,4,250,4"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="Event time"
+                FontSize="30" />
+            <ComboBox
+                Name="DateComboBox"
+                Grid.Row="2"
+                Width="200"
+                Height="25"
+                Margin="20,10,-100,1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <ComboBoxItem Content="Time 1" />
+                <ComboBoxItem Content="Time 2" />
+                <ComboBoxItem Content="Time 3" />
+            </ComboBox>
+            <Label
+                Name="Ticket_type"
+                Grid.Row="3"
+                Margin="2,4,250,4"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="Ticket type"
+                FontSize="30" />
+            <ComboBox
+                Name="TimeComboBox"
+                Grid.Row="3"
+                Width="200"
+                Height="25"
+                Margin="20,10,-100,1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <ComboBoxItem Content="Standard" />
+                <ComboBoxItem Content="Premium" />
+                <ComboBoxItem Content="VIP" />
+            </ComboBox>
+            <Button
+                Grid.Row="4"
+                Content="Back"
+                Width="100"
+                Height="30"
+                Margin="10"
+                FontSize="20"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"/>
+            <Button
+                Grid.Row="4"
+                Content="Check availability"
+                Width="170"
+                Height="30"
+                Margin="10"
+                FontSize="20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"/>
+
+        </Grid>
+        </StackPanel>
 </Window>
