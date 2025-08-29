@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,24 +14,21 @@ using System.Windows.Shapes;
 
 namespace Event_App
 {
-    public partial class Login : Window
+    public partial class Main : Window
     {
-        public Login()
+        public Main()
         {
             InitializeComponent();
-
         }
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
-        private void Forgot_Password(object sender, RoutedEventArgs e)
+        private void Login_Button(object sender, RoutedEventArgs e)
         {
-            Account_Verification accountVerificationWindow = new();
-            accountVerificationWindow.Show();
+            Login loginWindow = new();
+            loginWindow.Show();
             this.Close();
         }
-        private void RegisterLink_Click(object sender, RoutedEventArgs e)
+
+        private void Register_Button(object sender, RoutedEventArgs e)
         {
             Register registerWindow = new();
             registerWindow.Show();

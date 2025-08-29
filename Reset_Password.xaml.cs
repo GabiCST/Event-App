@@ -14,21 +14,24 @@ using System.Windows.Shapes;
 
 namespace Event_App
 {
-    public partial class Register : Window
+    /// <summary>
+    /// Interaction logic for Reset_Password.xaml
+    /// </summary>
+    public partial class Reset_Password : Window
     {
-        public Register()
+        public Reset_Password()
         {
             InitializeComponent();
         }
-        private void LoginLink_Click(object sender, RoutedEventArgs e)
+        private void Back_Button(object sender, RoutedEventArgs e)
         {
             Login loginWindow = new();
             loginWindow.Show();
             this.Close();
         }
-        private void RegisterButton_Click(object sender, RoutedEventArgs e)
+        private void Reset_Button(object sender, RoutedEventArgs e)
         {
-
+             
         }
     }
 }
