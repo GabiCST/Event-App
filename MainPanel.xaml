@@ -1,0 +1,82 @@
+﻿<Window x:Class="Event_App.MainPanel"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Event_App"
+        mc:Ignorable="d"
+        Title="MainPanel" Height="450" Width="800">
+    <StackPanel>
+        
+    <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button
+                Grid.Row="0"
+                Grid.Column="0"
+                Content="Available Tickets For All Events"
+                Width="290"
+                Height="50"
+                Margin="10"
+                FontSize="20" />
+            <Button
+                Grid.Row="1"
+                Grid.Column="0"
+                Content="Book Your Favorite Events"
+                Width="250"
+                Height="50"
+                Margin="10"
+                FontSize="20" />
+            <Button
+                Grid.Row="2"
+                Grid.Column="0"
+                Content="Available Tickets For Favorite Events"
+                Width="350"
+                Height="50"
+                Margin="10"
+                FontSize="20" />
+            <Button
+                Grid.Row="3"
+                Grid.Column="0"
+                Content="Buy A Ticket"
+                Width="140"
+                Height="30"
+                Margin="10"
+                FontSize="20"/>
+            <Button
+                Grid.Row="4"
+                Grid.Column="0"
+                Content="Cancel A Ticket"
+                Width="150"
+                Height="30"
+                Margin="10"
+                FontSize="20"/>
+            <Button
+                Grid.Row="5"
+                Grid.Column="0"
+                Content="View All Booked Tickets"
+                Width="230"
+                Height="30"
+                Margin="10"
+                FontSize="20"/>
+            <Button
+                Grid.Row="6"
+                Grid.Column="0"
+                Content="Log Out"
+                Width="120"
+                Height="30"
+                Margin="10"
+                FontSize="20"/>
+        </Grid>
+    </StackPanel>
+</Window>
