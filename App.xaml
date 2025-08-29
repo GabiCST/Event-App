@@ -1,9 +1,8 @@
-﻿<Application x:Class="Event_App.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Event_App"
-             StartupUri="Main.xaml">
-    <Application.Resources>
-         
-    </Application.Resources>
+<Application
+    x:Class="Event_App.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Event_App"
+    StartupUri="Main.xaml">
+    <Application.Resources/>
 </Application>
