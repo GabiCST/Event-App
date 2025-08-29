@@ -14,21 +14,25 @@ using System.Windows.Shapes;
 
 namespace Event_App
 {
-    public partial class Register : Window
+    public partial class Account_Verification : Window
     {
-        public Register()
+        public Account_Verification()
         {
             InitializeComponent();
         }
-        private void LoginLink_Click(object sender, RoutedEventArgs e)
+
+        private void Verify_Button(object sender, RoutedEventArgs e)
+        {
+            Reset_Password resetPasswordWindow = new();
+            resetPasswordWindow.Show();
+            this.Close();
+        }
+
+        private void Back_Button(object sender, RoutedEventArgs e)
         {
             Login loginWindow = new();
             loginWindow.Show();
             this.Close();
-        }
-        private void RegisterButton_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
