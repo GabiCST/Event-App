@@ -1,41 +1,94 @@
-﻿<Window x:Class="Event_App.Events"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Event_App"
-        mc:Ignorable="d"
-        Title="Events" Height="450" Width="800">
+﻿<Window
+    x:Class="Event_App.Events"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Event_App"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Events"
+    Width="800"
+    Height="450"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
     <StackPanel>
 
 
         <Label
-                Name="Request"
-                Content="Please choose your favorite genre !"
-                FontSize="30"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Grid.Row="0"
-                Margin="10">
-        </Label>
+            Name="Request"
+            Grid.Row="0"
+            Margin="10"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Content="Please choose your favorite genre !"
+            FontSize="30" />
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button Grid.Row ="0" Grid.Column="0" Content="Films" Width="200" Height="50" Margin="10" FontSize="20"/>
-            <Button Grid.Row ="0" Grid.Column="1" Content="Music" Width="200" Height="50" Margin="10" FontSize="20"/>
-            <Button Grid.Row ="1" Grid.Column="0" Content="Art" Width="200" Height="50" Margin="10" FontSize="20"/>
-            <Button Grid.Row ="1" Grid.Column="1" Content="Theatre" Width="200" Height="50" Margin="10" FontSize="20"/>
-            <Button Grid.Row ="2" Grid.Column="0" Content="Sports" Width="200" Height="50" Margin="10" FontSize="20"/>
-            <Button Grid.Row ="2" Grid.Column="1" Content="Technology" Width="200" Height="50" Margin="10" FontSize="20"/>
+            <Button
+                Grid.Row="0"
+                Grid.Column="0"
+                Width="200"
+                Height="50"
+                Margin="10"
+                Content="Films"
+                FontSize="20" />
+            <Button
+                Grid.Row="0"
+                Grid.Column="1"
+                Width="200"
+                Height="50"
+                Margin="10"
+                Content="Music"
+                FontSize="20" />
+            <Button
+                Grid.Row="1"
+                Grid.Column="0"
+                Width="200"
+                Height="50"
+                Margin="10"
+                Content="Art"
+                FontSize="20" />
+            <Button
+                Grid.Row="1"
+                Grid.Column="1"
+                Width="200"
+                Height="50"
+                Margin="10"
+                Content="Theatre"
+                FontSize="20" />
+            <Button
+                Grid.Row="2"
+                Grid.Column="0"
+                Width="200"
+                Height="50"
+                Margin="10"
+                Content="Sports"
+                FontSize="20" />
+            <Button
+                Grid.Row="2"
+                Grid.Column="1"
+                Width="200"
+                Height="50"
+                Margin="10"
+                Content="Technology"
+                FontSize="20" />
         </Grid>
-        <Button Content="Back" Width="100" Height="30" Margin="10" FontSize="16" HorizontalAlignment="Left"/>
+        <Button
+            Width="100"
+            Height="30"
+            Margin="10"
+            HorizontalAlignment="Left"
+            Click="Back_Button"
+            Content="Back"
+            FontSize="16" />
     </StackPanel>
 </Window>

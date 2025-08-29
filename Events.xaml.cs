@@ -14,14 +14,17 @@ using System.Windows.Shapes;
 
 namespace Event_App
 {
-    /// <summary>
-    /// Interaction logic for Events.xaml
-    /// </summary>
     public partial class Events : Window
     {
         public Events()
         {
             InitializeComponent();
+        }
+        private void Back_Button(object sender, RoutedEventArgs e)
+        {
+            MainPanel mainPanelWindow = new();
+            mainPanelWindow.Show();
+            this.Close();
         }
     }
 }

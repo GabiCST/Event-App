@@ -22,9 +22,11 @@ namespace Event_App
             InitializeComponent();
 
         }
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        private void Login_Button(object sender, RoutedEventArgs e)
         {
-
+            MainPanel mainPanelWindow = new();
+            mainPanelWindow.Show();
+            this.Close();
         }
         private void Forgot_Password(object sender, RoutedEventArgs e)
         {
@@ -32,7 +34,7 @@ namespace Event_App
             accountVerificationWindow.Show();
             this.Close();
         }
-        private void RegisterLink_Click(object sender, RoutedEventArgs e)
+        private void Register_Button(object sender, RoutedEventArgs e)
         {
             Register registerWindow = new();
             registerWindow.Show();

@@ -64,13 +64,13 @@
                 Height="30"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
-                Click="LoginButton_Click"
+                Click="Login_Button"
                 Content="Login" />
             <TextBlock Margin="0,30,0,0" HorizontalAlignment="Center">
                 <Hyperlink Click="Forgot_Password">Forgot Password?</Hyperlink>
             </TextBlock>
             <TextBlock Margin="0,40,0,0" HorizontalAlignment="Center"> Don't have an account?
-                <Hyperlink Click="RegisterLink_Click">Register here.</Hyperlink>
+                <Hyperlink Click="Register_Button">Register here.</Hyperlink>
             </TextBlock>
         </StackPanel>
 

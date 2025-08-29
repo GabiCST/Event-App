@@ -14,14 +14,17 @@ using System.Windows.Shapes;
 
 namespace Event_App
 {
-    /// <summary>
-    /// Interaction logic for CheckFavoriteEvents.xaml
-    /// </summary>
     public partial class CheckFavoriteEvents : Window
     {
         public CheckFavoriteEvents()
         {
             InitializeComponent();
+        }
+        private void Back_Button(object sender, RoutedEventArgs e)
+        {
+            MainPanel mainPanelWindow = new();
+            mainPanelWindow.Show();
+            this.Close();
         }
     }
 }

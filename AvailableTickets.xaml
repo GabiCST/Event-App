@@ -8,6 +8,8 @@
     Title="AvailableTickets"
     Width="800"
     Height="450"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <StackPanel>
         <Grid>
@@ -128,6 +130,7 @@
                 Height="30"
                 Margin="10,4,170,4"
                 HorizontalAlignment="Center"
+                Click="Back_Button"
                 Content="Back"
                 FontSize="16" />
             <Button

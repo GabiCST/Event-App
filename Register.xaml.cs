@@ -28,7 +28,9 @@ namespace Event_App
         }
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-
+            MainPanel mainPanel = new();
+            mainPanel.Show();
+            this.Close();
         }
     }
 }
