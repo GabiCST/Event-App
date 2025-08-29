@@ -24,16 +24,18 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Label
+               
                 Grid.Row="0"
                 Grid.Column="0"
                 Margin="20"
                 VerticalAlignment="Center"
-                Content="Username:" />
+                Content="Username:"/>
             <TextBox
+                 x:Name="Username"
                 Grid.Row="0"
                 Grid.Column="1"
                 Width="200"
-                Height="25" />
+                Height="25"/>
             <Label
                 Grid.Row="1"
                 Grid.Column="0"
@@ -41,10 +43,11 @@
                 VerticalAlignment="Center"
                 Content="Email:" />
             <TextBox
+                x:Name="Email"
                 Grid.Row="1"
                 Grid.Column="1"
                 Width="200"
-                Height="25" />
+                Height="25"/>
             <Label
                 Grid.Row="2"
                 Grid.Column="0"
@@ -52,10 +55,11 @@
                 VerticalAlignment="Center"
                 Content="Password:" />
             <PasswordBox
+                x:Name="Password"
                 Grid.Row="2"
                 Grid.Column="1"
                 Width="200"
-                Height="25" />
+                Height="25"/>
 
             <Label
                 Grid.Row="3"
@@ -64,10 +68,11 @@
                 VerticalAlignment="Center"
                 Content="Confirm Password:" />
             <PasswordBox
+                x:Name="ConfPassword"
                 Grid.Row="3"
                 Grid.Column="1"
                 Width="200"
-                Height="25" />
+                Height="25"/>
         </Grid>
         <StackPanel>
             <Button
