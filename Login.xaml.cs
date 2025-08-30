@@ -24,6 +24,18 @@ namespace Event_App
         }
         private void Login_Button(object sender, RoutedEventArgs e)
         {
+            if(string.IsNullOrWhiteSpace(UserOrEmail.Text) || string.IsNullOrWhiteSpace(Password.Password))
+            {
+                MessageBox.Show("Please enter both email and password.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if(!UserRepository.ValidateCredentials(UserOrEmail.Text, Password.Password))
+            {
+                MessageBox.Show("Invalid email or password.", "Authentication Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             MainPanel mainPanelWindow = new();
             mainPanelWindow.Show();
             this.Close();
