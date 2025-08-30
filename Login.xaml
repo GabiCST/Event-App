@@ -18,19 +18,19 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="175" />
-                <ColumnDefinition Width="175" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
 
             </Grid.ColumnDefinitions>
             <Label
-                Name="Email"
                 Grid.Row="0"
                 Grid.Column="0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Content="Email:"
+                Content="Username or Email:"
                 FontSize="20" />
             <TextBox
+                x:Name="UserOrEmail"
                 Grid.Row="0"
                 Grid.Column="1"
                 Width="150"
@@ -38,7 +38,6 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center" />
             <Label
-                Name="Password"
                 Grid.Row="1"
                 Grid.Column="0"
                 HorizontalAlignment="Center"
@@ -47,6 +46,7 @@
                 FontSize="20" />
 
             <PasswordBox
+                x:Name="Password"
                 Grid.Row="1"
                 Grid.Column="1"
                 Width="150"
@@ -59,9 +59,9 @@
                 x:Name="LoginButton"
                 Grid.Row="2"
                 Grid.Column="0"
-                Margin="0,20,0,0"
                 Width="250"
                 Height="30"
+                Margin="0,20,0,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
                 Click="Login_Button"
@@ -69,8 +69,8 @@
             <TextBlock Margin="0,30,0,0" HorizontalAlignment="Center">
                 <Hyperlink Click="Forgot_Password">Forgot Password?</Hyperlink>
             </TextBlock>
-            <TextBlock Margin="0,40,0,0" HorizontalAlignment="Center"> Don't have an account?
-                <Hyperlink Click="Register_Button">Register here.</Hyperlink>
+            <TextBlock Margin="0,40,0,0" HorizontalAlignment="Center">
+                Don't have an account?<Hyperlink Click="Register_Button">Register here.</Hyperlink>
             </TextBlock>
         </StackPanel>
 
