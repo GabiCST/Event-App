@@ -44,7 +44,7 @@ namespace Event_App
             }
             MessageBox.Show("Registration successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            MainPanel mainPanel = new();
+            MainPanel mainPanel = new(Username.Text);
             mainPanel.Show();
             this.Close();
         }

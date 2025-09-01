@@ -17,13 +17,15 @@ namespace Event_App
 
     public partial class AdminWindow : Window
     {
-        public AdminWindow()
+        private readonly User? _user;
+        public AdminWindow(User user)
         {
+            _user = user;
             InitializeComponent();
         }
         public void Back_Button(object sender, RoutedEventArgs e)
         {
-            MainPanel mainPanel = new();
+            MainPanel mainPanel = new(_user?.Username ?? string.Empty);
             mainPanel.Show();
             this.Close();
         }
