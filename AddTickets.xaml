@@ -1,0 +1,122 @@
+﻿<Window
+    x:Class="Event_App.AddTickets"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Event_App"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="AddTickets"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+    <StackPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="150" />
+            </Grid.RowDefinitions>
+            <Label
+                Name="Type"
+                Grid.Row="0"
+                Margin="2,4,250,4"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="Event type"
+                FontSize="30" />
+            <TextBox
+                Name="TypeTextBox"
+                Grid.Row="0"
+                Width="200"
+                Height="25"
+                Margin="20,10,-100,1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center" />
+            <Label
+                Name="Event"
+                Grid.Row="1"
+                Margin="2,4,250,4"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="Event"
+                FontSize="30" />
+            <TextBox
+                Name="EventTextBox"
+                Grid.Row="1"
+                Width="200"
+                Height="25"
+                Margin="20,10,-100,1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center" />
+            <Label
+                Name="Date"
+                Grid.Row="2"
+                Margin="2,4,250,4"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="Date"
+                FontSize="30" />
+            <TextBox
+                Name="DateTextBox"
+                Grid.Row="2"
+                Width="200"
+                Height="25"
+                Margin="20,10,-100,1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center" />
+            <Label
+                Name="Time"
+                Grid.Row="3"
+                Margin="2,4,250,4"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="Time"
+                FontSize="30" />
+            <TextBox
+                Name="TimeTextBox"
+                Grid.Row="3"
+                Width="200"
+                Height="25"
+                Margin="20,10,-100,1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center" />
+            <Label
+                Name="TicketNumber"
+                Grid.Row="4"
+                Margin="2,4,250,4"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="Ticket num."
+                FontSize="30" />
+            <TextBox
+                Name="Ticket"
+                Grid.Row="4"
+                Width="200"
+                Height="25"
+                Margin="20,10,-100,1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center" />
+            <Button
+                Grid.Row="6"
+                Width="100"
+                Height="30"
+                Margin="10,4,170,4"
+                HorizontalAlignment="Center"
+                Click="Back_Button"
+                Content="Back"
+                FontSize="16" />
+            <Button
+                Grid.Row="6"
+                Width="200"
+                Height="30"
+                Margin="170,4,10,4"
+                HorizontalAlignment="Center"
+                Click="Add_Ticket"
+                Content="Add"
+                FontSize="16" />
+        </Grid>
+    </StackPanel>
+</Window>
