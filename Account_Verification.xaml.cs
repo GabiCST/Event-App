@@ -23,7 +23,20 @@ namespace Event_App
 
         private void Verify_Button(object sender, RoutedEventArgs e)
         {
-            Reset_Password resetPasswordWindow = new();
+            if (string.IsNullOrWhiteSpace(Username.Text) || string.IsNullOrWhiteSpace(Email.Text))
+            {
+                MessageBox.Show("Please enter both username and email.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (!UserRepository.ValidateCredentialsPassword(Username.Text, Email.Text))
+            {
+                MessageBox.Show("Invalid username or email.", "Authentication Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            User user = new(Username.Text, Email.Text, string.Empty, string.Empty);
+
+            Reset_Password resetPasswordWindow = new(user);
             resetPasswordWindow.Show();
             this.Close();
         }

@@ -26,7 +26,7 @@ namespace Event_App
         {
             if(string.IsNullOrWhiteSpace(UserOrEmail.Text) || string.IsNullOrWhiteSpace(Password.Password))
             {
-                MessageBox.Show("Please enter both email and password.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Please enter both Username or email and password.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 

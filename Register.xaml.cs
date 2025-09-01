@@ -23,9 +23,6 @@ namespace Event_App
         }
         private void LoginLink_Click(object sender, RoutedEventArgs e)
         {
-
-            // Verifica existenta email ului
-
             Login loginWindow = new();
             loginWindow.Show();
             this.Close();
@@ -33,6 +30,7 @@ namespace Event_App
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
             var user = new User(Username.Text, Email.Text, Password.Password, ConfPassword.Password);
+
             string? validationError = user.UserIsValid();
             if (validationError != null)
             {
