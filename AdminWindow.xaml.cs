@@ -14,14 +14,33 @@ using System.Windows.Shapes;
 
 namespace Event_App
 {
-    /// <summary>
-    /// Interaction logic for AdminWindow.xaml
-    /// </summary>
+
     public partial class AdminWindow : Window
     {
         public AdminWindow()
         {
             InitializeComponent();
+        }
+        public void Back_Button(object sender, RoutedEventArgs e)
+        {
+            MainPanel mainPanel = new();
+            mainPanel.Show();
+            this.Close();
+        }
+        public void LogOut_Button(object sender, RoutedEventArgs e)
+        {
+            Login loginWindow = new();
+            loginWindow.Show();
+            this.Close();
+        }
+        private void AddTickets_Button(object sender, RoutedEventArgs e)
+        { 
+        }
+        private void AvailableTickets_Button(object sender, RoutedEventArgs e)
+        { 
+        }
+        private void ViewCreatedAccounts_Button(object sender, RoutedEventArgs e)
+        { 
         }
     }
 }

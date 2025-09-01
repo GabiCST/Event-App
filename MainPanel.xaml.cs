@@ -50,5 +50,11 @@ namespace Event_App
             loginWindow.Show();
             this.Close();
         }
+        private void AdminPanel_Button(object sender, RoutedEventArgs e)
+        {
+            AdminWindow admin = new();
+            admin.Show();
+            this.Close();
+        }
     }
 }

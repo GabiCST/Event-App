@@ -55,7 +55,7 @@
                 Content="Available tickets for favorite events"
                 FontSize="20" />
             <Button
-                Grid.Row="5"
+                Grid.Row="3"
                 Grid.Column="0"
                 Width="300"
                 Height="30"
@@ -63,7 +63,15 @@
                 Content="View your purchased tickets"
                 FontSize="20" />
             <Button
-                Grid.Row="6"
+                Grid.Row="4"
+                Width="150"
+                Height="30"
+                Click="AdminPanel_Button"
+                Content="Admin Panel"
+                FontSize="20"
+                Visibility="Visible" />
+            <Button
+                Grid.Row="5"
                 Grid.Column="0"
                 Width="120"
                 Height="30"
@@ -71,6 +79,7 @@
                 Click="LogOut_Button"
                 Content="Log Out"
                 FontSize="20" />
+
         </Grid>
     </StackPanel>
 </Window>
