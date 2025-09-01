@@ -36,7 +36,15 @@ namespace Event_App
             this.Close();
         }
         private void AddTickets_Button(object sender, RoutedEventArgs e)
-        { 
+        {
+            if (_user == null)
+    {
+        MessageBox.Show("User information is missing. Cannot add tickets.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        return;
+    }
+    AddTickets addticket = new(_user);
+    addticket.Show();
+    this.Close();
         }
         private void AvailableTickets_Button(object sender, RoutedEventArgs e)
         { 
