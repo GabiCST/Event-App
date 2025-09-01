@@ -31,6 +31,7 @@
                 VerticalAlignment="Center"
                 Content="Username:" />
             <TextBox
+                x:Name="Username"
                 Grid.Row="0"
                 Grid.Column="1"
                 Width="200"
@@ -42,6 +43,7 @@
                 VerticalAlignment="Center"
                 Content="Email:" />
             <TextBox
+                x:Name="Email"
                 Grid.Row="1"
                 Grid.Column="1"
                 Width="200"

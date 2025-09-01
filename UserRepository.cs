@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
+using System.Windows.Shapes;
+
 namespace Event_App
 {
     public class UserRepository
@@ -12,11 +14,10 @@ namespace Event_App
 
         public static bool AddUser(User user)
         {
-             if(FindByEmail(user.Email) != null || FindByUsername(user.Username)!= null)
-                return false;
-             string line = $"{user.Username}:{user.Email}:{user.Password}";
-             File.AppendAllLines(file, new[] { line });
-             return true;
+            if(FindByEmail(user.Email) != null || FindByUsername(user.Username)!= null) return false;
+            string line = $"{user.Username}:{user.Email}:{user.Password}";
+            File.AppendAllLines(file, new List<string> { line });
+            return true;
         }
         public static User? FindByEmail(string email)
         {
@@ -43,6 +44,21 @@ namespace Event_App
         {
             if (!File.Exists(file)) return false;
             return File.ReadAllLines(file).Select(ParseUserLine).Any(u => u != null && (u.Email == usernameOrEmail || u.Username == usernameOrEmail) && u.Password == password);
+        }
+        public static bool ValidateCredentialsPassword(string username, string email)
+        {
+            if (!File.Exists(file)) return false;
+            return File.ReadAllLines(file).Select(ParseUserLine).Any(u => u != null && u.Username == username && u.Email == email);
+        }
+        public static bool PasswordChange(User user, string password)
+        {
+            var users = GetAllUsers();
+            var userToUpdate = users.FirstOrDefault(u => u != null && u.Email == user.Email);
+            if (userToUpdate == null) return false;
+            userToUpdate.Password = password;
+            var lines = users.Select(u => $"{u.Username}:{u.Email}:{u.Password}");
+            File.WriteAllLines(file,lines);
+            return true;
         }
     }
 }

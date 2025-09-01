@@ -35,6 +35,7 @@ namespace Event_App
                 return "Email cannot be empty.";
             if (!EmailRegex.IsMatch(Email))
                 return "Email format is invalid.";
+
             if (string.IsNullOrWhiteSpace(Password))
                 return "Password cannot be empty.";
             if (Password.Length < PasswordMinLength)
