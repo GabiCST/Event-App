@@ -5,9 +5,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Event_App"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     Title="AddTickets"
-    Width="800"
+    Width="500"
     Height="450"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <StackPanel>
         <Grid>
@@ -17,12 +20,15 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="150" />
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
             <Label
                 Name="Type"
                 Grid.Row="0"
-                Margin="2,4,250,4"
+                Grid.Column="0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Content="Event type"
@@ -30,15 +36,15 @@
             <TextBox
                 Name="TypeTextBox"
                 Grid.Row="0"
+                Grid.Column="1"
                 Width="200"
                 Height="25"
-                Margin="20,10,-100,1"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center" />
             <Label
                 Name="Event"
                 Grid.Row="1"
-                Margin="2,4,250,4"
+                Grid.Column="0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Content="Event"
@@ -46,77 +52,101 @@
             <TextBox
                 Name="EventTextBox"
                 Grid.Row="1"
+                Grid.Column="1"
                 Width="200"
                 Height="25"
-                Margin="20,10,-100,1"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center" />
             <Label
                 Name="Date"
                 Grid.Row="2"
-                Margin="2,4,250,4"
+                Grid.Column="0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Content="Date"
                 FontSize="30" />
-            <TextBox
+            <DatePicker
                 Name="DateTextBox"
                 Grid.Row="2"
+                Grid.Column="1"
                 Width="200"
                 Height="25"
-                Margin="20,10,-100,1"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center" />
             <Label
                 Name="Time"
                 Grid.Row="3"
-                Margin="2,4,250,4"
+                Grid.Column="0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Content="Time"
                 FontSize="30" />
-            <TextBox
-                Name="TimeTextBox"
+            <StackPanel
                 Grid.Row="3"
-                Width="200"
-                Height="25"
-                Margin="20,10,-100,1"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center" />
-            <Label
-                Name="TicketNumber"
-                Grid.Row="4"
-                Margin="2,4,250,4"
+                Grid.Column="1"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Content="Ticket num."
-                FontSize="30" />
-            <TextBox
-                Name="Ticket"
+                Orientation="Horizontal">
+                <xctk:IntegerUpDown
+                    Name="HourTime"
+                    Width="40"
+                    Height="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Maximum="23"
+                    Minimum="0"
+                    Value="0" />
+                <xctk:IntegerUpDown
+                    Name="MinutesTime"
+                    Width="40"
+                    Height="25"
+                    Margin="20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Maximum="59"
+                    Minimum="0"
+                    Value="0" />
+            </StackPanel>
+            <Label
+                Name="TicketNumberLabel"
                 Grid.Row="4"
-                Width="200"
-                Height="25"
-                Margin="20,10,-100,1"
+                Grid.Column="0"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                Content="Ticket number"
+                FontSize="30" />
+            <xctk:IntegerUpDown
+                Name="TicketNumber"
+                Grid.Row="4"
+                Grid.Column="1"
+                Width="40"
+                Height="25"
+                Margin="20"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Maximum="9999"
+                Minimum="0"
+                Value="0" />
+
+        </Grid>
+
+        <StackPanel Orientation="Horizontal">
             <Button
-                Grid.Row="6"
                 Width="100"
                 Height="30"
-                Margin="10,4,170,4"
+                Margin="30,50,0,0"
                 HorizontalAlignment="Center"
                 Click="Back_Button"
                 Content="Back"
                 FontSize="16" />
             <Button
-                Grid.Row="6"
                 Width="200"
                 Height="30"
-                Margin="170,4,10,4"
+                Margin="145,50,0,0"
                 HorizontalAlignment="Center"
                 Click="Add_Ticket"
                 Content="Add"
                 FontSize="16" />
-        </Grid>
+        </StackPanel>
     </StackPanel>
 </Window>
