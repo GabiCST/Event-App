@@ -40,6 +40,7 @@ namespace Event_App
             if (parts.Length != 3) return null;
             return new User(parts[0], parts[1], parts[2], parts[2]);
         }
+         
         public static bool ValidateCredentials(string usernameOrEmail, string password)
         {
             if (!File.Exists(file)) return false;
@@ -59,6 +60,26 @@ namespace Event_App
             var lines = users.Select(u => $"{u.Username}:{u.Email}:{u.Password}");
             File.WriteAllLines(file,lines);
             return true;
+        }
+
+        public static User? Authenticate(string usernameOrEmail, string password)
+        {
+            if (!File.Exists(file)) return null;
+            var input = usernameOrEmail.Trim();
+            return File.ReadAllLines(file)
+                .Select(ParseUserLine)
+                .FirstOrDefault(u =>
+                    u != null &&
+                    (u.Email.Equals(input, StringComparison.OrdinalIgnoreCase) ||
+                     u.Username.Equals(input, StringComparison.OrdinalIgnoreCase)) &&
+                    u.Password == password);
+        }
+
+        public static string? ResolveUsername(string usernameOrEmail)
+        {
+            var input = usernameOrEmail.Trim();
+            var user = FindByUsername(input) ?? FindByEmail(input);
+            return user?.Username;
         }
     }
 }

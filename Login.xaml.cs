@@ -24,19 +24,22 @@ namespace Event_App
         }
         private void Login_Button(object sender, RoutedEventArgs e)
         {
-            if(string.IsNullOrWhiteSpace(UserOrEmail.Text) || string.IsNullOrWhiteSpace(Password.Password))
+            var input = UserOrEmail.Text?.Trim();
+            var pwd = Password.Password;
+
+            if (string.IsNullOrWhiteSpace(input) || string.IsNullOrWhiteSpace(pwd))
             {
                 MessageBox.Show("Please enter both Username or email and password.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            if(!UserRepository.ValidateCredentials(UserOrEmail.Text, Password.Password))
+            var user = UserRepository.Authenticate(input, pwd);
+            if (user == null)
             {
-                MessageBox.Show("Invalid email or password.", "Authentication Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Invalid user/email or password.", "Authentication Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
-            }
-
-            MainPanel mainPanelWindow = new();
+            } 
+            MainPanel mainPanelWindow = new(user.Username);
             mainPanelWindow.Show();
             this.Close();
         }

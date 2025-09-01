@@ -16,10 +16,26 @@ namespace Event_App
 {
     public partial class MainPanel : Window
     {
+        private readonly User? _user; 
         public MainPanel()
         {
-            InitializeComponent();
+            InitializeComponent(); 
+            AdminPanelButton.Visibility = Visibility.Collapsed;
+        } 
+        public MainPanel(string username)
+        { 
+            _user = UserRepository.FindByUsername(username) ?? UserRepository.FindByEmail(username); 
+            InitializeComponent(); 
+            if (_user != null && Admin.IsAdmin(_user.Username))
+            {
+                AdminPanelButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                AdminPanelButton.Visibility = Visibility.Collapsed;
+            }
         }
+
         private void Available_Tickets_Button(object sender, RoutedEventArgs e)
         {
             AvailableTickets availableTicketsWindow = new();
@@ -52,7 +68,7 @@ namespace Event_App
         }
         private void AdminPanel_Button(object sender, RoutedEventArgs e)
         {
-            AdminWindow admin = new();
+            AdminWindow admin = new(_user);
             admin.Show();
             this.Close();
         }

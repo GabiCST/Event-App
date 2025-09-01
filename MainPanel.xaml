@@ -63,13 +63,13 @@
                 Content="View your purchased tickets"
                 FontSize="20" />
             <Button
+                x:Name="AdminPanelButton"
                 Grid.Row="4"
                 Width="150"
                 Height="30"
                 Click="AdminPanel_Button"
                 Content="Admin Panel"
-                FontSize="20"
-                Visibility="Visible" />
+                FontSize="20"/>
             <Button
                 Grid.Row="5"
                 Grid.Column="0"
