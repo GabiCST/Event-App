@@ -56,13 +56,13 @@ namespace Event_App
                 Margin = new Thickness(5),
                 Padding = new Thickness(10)
             };
-            Button BuyButton = new Button();
-            Button FavButton = new Button();
+            Button BuyButton = new();
+            Button FavButton = new();
             FavButton.Content = "Add to Favorites";
             FavButton.Margin = new Thickness(5);
             FavButton.Click += (s, e) =>
             {
-                string FavTicket = $"{Type},{title},{date},{time},{nrTickets}";
+                string FavTicket = $"{Type},{title},{date},{time},{ticketType},{nrTickets}";
                 File.AppendAllBytes("favorite_tickets.txt", Encoding.UTF8.GetBytes(FavTicket + Environment.NewLine));
                 MessageBox.Show($"You have added {title} to your favorites!");
             };
@@ -71,7 +71,7 @@ namespace Event_App
             BuyButton.Margin = new Thickness(5);
             BuyButton.Click += (s, e) =>
             {
-                string BoughtTicket = $"{Type},{title},{date},{time},{nrTickets}";
+                string BoughtTicket = $"{Type},{title},{date},{time},{ticketType},{nrTickets}";
                 File.AppendAllBytes("bought_tickets.txt", Encoding.UTF8.GetBytes(BoughtTicket + Environment.NewLine));
                 MessageBox.Show($"You have bought a ticket for {title} on {date} at {time}");
             };

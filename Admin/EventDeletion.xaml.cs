@@ -7,10 +7,8 @@ namespace Event_App
 {
     public partial class EventDeletion : Window
     {
-        private readonly User? _user;
-        public EventDeletion(User user)
+        public EventDeletion()
         {
-            _user = user;
             InitializeComponent();
             LoadTickets("tickets.txt");
         }
@@ -43,22 +41,18 @@ namespace Event_App
            panel.Children.Add(new TextBlock { Text = $"Event: {title}", FontWeight = FontWeights.Bold });
            panel.Children.Add(new TextBlock { Text = $"Date: {date}" });
            panel.Children.Add(new TextBlock { Text = $"Time: {time}" });
-            panel.Children.Add(new TextBlock { Text = $"Ticket type: {ticketType}" });
-            panel.Children.Add(new TextBlock { Text = $"Available Tickets: {nrTickets}" });
-            Button deleteButton = new Button
-            {
-                Content = "Delete",
-                Tag = new { Type = type, Title = title, Date = date, Time = time, TicketType = ticketType, NrTickets = nrTickets }
-            };
+           panel.Children.Add(new TextBlock { Text = $"Ticket type: {ticketType}" });
+           panel.Children.Add(new TextBlock { Text = $"Available Tickets: {nrTickets}" });
+           Button deleteButton = new Button
+           {
+               Content = "Delete",
+               Tag = new { Type = type, Title = title, Date = date, Time = time, TicketType = ticketType, NrTickets = nrTickets }
+           };
             
             var eventData = deleteButton.Tag;
             deleteButton.Click += (sender, e) =>
             {
-                if (_user == null)
-                {
-                    MessageBox.Show("User information is missing. Cannot delete events.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
+                 
                 dynamic tag = eventData;
                 var result = MessageBox.Show($"Are you sure you want to delete the event '{tag.Title}'?", "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result != MessageBoxResult.Yes) return;
@@ -81,7 +75,7 @@ namespace Event_App
         }
         private void Back_Button(object sender, RoutedEventArgs e)
         {
-            AdminWindow adminWindow = new(_user!);
+            AdminWindow adminWindow = new();
             adminWindow.Show();
             this.Close();
         }

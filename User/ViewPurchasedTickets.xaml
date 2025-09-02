@@ -19,9 +19,8 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Click="Back_Button"
-            Content="Back" 
-            />
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,35,0,0">
+            Content="Back" />
+        <ScrollViewer Margin="0,35,0,0" VerticalScrollBarVisibility="Auto">
             <StackPanel x:Name="EventsPanel" Orientation="Vertical" />
         </ScrollViewer>
     </Grid>

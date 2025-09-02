@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,24 +11,29 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace Event_App
 {
-    /// <summary>
-    /// Interaction logic for ViewFavoriteTickets.xaml
-    /// </summary>
-    public partial class ViewFavoriteTickets : Window
+ 
+    public partial class ViewPurchasedTickets : Window
     {
-        public ViewFavoriteTickets()
+        public ViewPurchasedTickets()
         {
             InitializeComponent();
-            LoadTickets("favorite_tickets.txt");
+            LoadTickets("bought_tickets.txt");
+        }
+        private void Back_Button(object sender, RoutedEventArgs e)
+        {
+            MainPanel panel = new();
+            panel.Show();
+            this.Close();
         }
         private void LoadTickets(string file)
         {
             if (!File.Exists(file))
             {
-                EventsPanel.Children.Add(new TextBlock { Text = "No events available" });
+                EventsPanel.Children.Add(new TextBlock { Text = "No events avaliable" });
                 return;
             }
             var lines = File.ReadAllLines(file);
