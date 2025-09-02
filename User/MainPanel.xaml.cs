@@ -27,7 +27,9 @@ namespace Event_App
        
         private void Favorite_Button(object sender, RoutedEventArgs e)
         {
-                
+                ViewFavoriteTickets favoriteTicketsWindow = new();
+                favoriteTicketsWindow.Show();
+                this.Close();
         }
         private void Purchased_Button(object sender, RoutedEventArgs e)
         {
