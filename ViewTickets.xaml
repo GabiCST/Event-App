@@ -8,9 +8,19 @@
     Title="ViewTickets"
     Width="800"
     Height="450"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Button
+            Width="30"
+            Height="20"
+            Margin="10,10,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="Back_Button"
+            Content="Back" />
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,35,0,0">
             <StackPanel x:Name="EventsPanel" Orientation="Vertical" />
         </ScrollViewer>
     </Grid>

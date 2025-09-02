@@ -26,6 +26,12 @@ namespace Event_App
             InitializeComponent();
             LoadTickets("tickets.txt");
         }
+        private void Back_Button(object sender, RoutedEventArgs e)
+        {
+            MainPanel panel = new();
+            panel.Show();
+            this.Close();
+        }
         private void LoadTickets(string file)
         {
             if (!File.Exists(file))

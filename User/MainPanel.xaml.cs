@@ -24,17 +24,12 @@ namespace Event_App
             }
         }
 
-        private void Available_Tickets_Button(object sender, RoutedEventArgs e)
-        {
-            AvailableTickets availableTicketsWindow = new();
-            availableTicketsWindow.Show();
-            this.Close();
-        }
+       
         private void Favorite_Button(object sender, RoutedEventArgs e)
         {
                 
         }
-        private void Purchased_Tickets_Button(object sender, RoutedEventArgs e)
+        private void Purchased_Button(object sender, RoutedEventArgs e)
         {
             ViewPurchasedTickets purchasedTicketsWindow = new();
             purchasedTicketsWindow.Show();
