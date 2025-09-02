@@ -20,6 +20,8 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
+
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -108,8 +110,25 @@
                     Value="0" />
             </StackPanel>
             <Label
-                Name="TicketNumberLabel"
                 Grid.Row="4"
+                Grid.Column="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="Ticket type"
+                FontSize="30" />
+            <ComboBox
+                x:Name="TicketType_Combo"
+                Grid.Row="4"
+                Grid.Column="1"
+                Width="100"
+                Height="25">
+                <ComboBoxItem Content="Standard" IsSelected="True" />
+                <ComboBoxItem Content="Premium" />
+                <ComboBoxItem Content="VIP" />
+            </ComboBox>
+            <Label
+                Name="TicketNumberLabel"
+                Grid.Row="5"
                 Grid.Column="0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
@@ -117,7 +136,7 @@
                 FontSize="30" />
             <xctk:IntegerUpDown
                 Name="TicketNumber"
-                Grid.Row="4"
+                Grid.Row="5"
                 Grid.Column="1"
                 Width="40"
                 Height="25"
@@ -127,7 +146,6 @@
                 Maximum="9999"
                 Minimum="0"
                 Value="0" />
-
         </Grid>
 
         <StackPanel Orientation="Horizontal">

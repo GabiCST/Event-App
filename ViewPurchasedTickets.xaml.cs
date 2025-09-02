@@ -42,11 +42,11 @@ namespace Event_App
             foreach (var line in lines)
             {
                 var parts = line.Split(',');
-                if (parts.Length == 5) AddEvent(parts[0], parts[1], parts[2], parts[3], parts[4]);
+                if (parts.Length == 6) AddEvent(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]);
 
             }
         }
-        private void AddEvent(string Type, string title, string date, string time, string nrTickets)
+        private void AddEvent(string Type, string title, string date, string time, string ticketType, string nrTickets)
         {
             Border card = new()
             {
@@ -60,6 +60,7 @@ namespace Event_App
             panel.Children.Add(new TextBlock { Text = $"Event: {title}", FontWeight = FontWeights.Bold });
             panel.Children.Add(new TextBlock { Text = $"Date: {date}" });
             panel.Children.Add(new TextBlock { Text = $"Time: {time}" });
+            panel.Children.Add(new TextBlock { Text = $"Ticket Type: {ticketType}" });
             panel.Children.Add(new TextBlock { Text = $"Available Tickets: {nrTickets}" });
             card.Child = panel;
             EventsPanel.Children.Add(card);

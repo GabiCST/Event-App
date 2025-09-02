@@ -25,10 +25,10 @@ namespace Event_App
             foreach (var line in lines)
             {
                 var parts = line.Split(',');
-                if (parts.Length == 5) AddEvent(parts[0], parts[1], parts[2], parts[3], parts[4]);
+                if (parts.Length == 6) AddEvent(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]);
             }
         }
-        private void AddEvent(string type, string title, string date, string time, string nrTickets)
+        private void AddEvent(string type, string title, string date, string time, string ticketType, string nrTickets)
         {
            Border card = new()
            {
@@ -39,16 +39,18 @@ namespace Event_App
            };
            
            StackPanel panel = new();
-           panel.Children.Add(new TextBlock { Text = $"Event Type:{type}"});
+           panel.Children.Add(new TextBlock { Text = $"Event type:{type}"});
            panel.Children.Add(new TextBlock { Text = $"Event: {title}", FontWeight = FontWeights.Bold });
            panel.Children.Add(new TextBlock { Text = $"Date: {date}" });
            panel.Children.Add(new TextBlock { Text = $"Time: {time}" });
-           panel.Children.Add(new TextBlock { Text = $"Available Tickets: {nrTickets}" });
-           Button deleteButton = new Button
-           {
-               Content = "Delete",
-               Tag = new { Type = type, Title = title, Date = date, Time = time, NrTickets = nrTickets }
-           };
+            panel.Children.Add(new TextBlock { Text = $"Ticket type: {ticketType}" });
+            panel.Children.Add(new TextBlock { Text = $"Available Tickets: {nrTickets}" });
+            Button deleteButton = new Button
+            {
+                Content = "Delete",
+                Tag = new { Type = type, Title = title, Date = date, Time = time, TicketType = ticketType, NrTickets = nrTickets }
+            };
+            
             var eventData = deleteButton.Tag;
             deleteButton.Click += (sender, e) =>
             {
@@ -68,7 +70,7 @@ namespace Event_App
                 if (File.Exists(file))
                 {
                     var lines = File.ReadAllLines(file).ToList();
-                    string lineToRemove = $"{tag.Type},{tag.Title},{tag.Date},{tag.Time},{tag.NrTickets}";
+                    string lineToRemove = $"{tag.Type},{tag.Title},{tag.Date},{tag.Time},{tag.TicketType},{tag.NrTickets}";
                     lines.RemoveAll(l => l.Trim() == lineToRemove);
                     File.WriteAllLines(file, lines);
                 }

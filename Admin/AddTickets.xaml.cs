@@ -31,7 +31,8 @@ namespace Event_App
             int hours = HourTime.Value ?? 0;
             int minutes = MinutesTime.Value ?? 0;
             TimeSpan time = new (hours, minutes,0);
-
+            string TicketType = TicketType_Combo.Text;
+            if(string.IsNullOrWhiteSpace(TicketType)) TicketType= "Standard";
             int nrTickets = TicketNumber.Value ?? 0;
 
             if (nrTickets == 0)
@@ -45,6 +46,7 @@ namespace Event_App
                 EventTextBox.Text,
                 date,
                 time,
+                TicketType,
                 nrTickets
             );
 
@@ -56,15 +58,15 @@ namespace Event_App
             for(int i = 0; i < lines.Count; ++i)
             {
                 var parts = lines[i].Split(',');
-                if(parts.Length >=5 && parts[1] == ticket.Event
+                if(parts.Length >=6 && parts[1] == ticket.Event && parts[4] == ticket.TicketType
                     && DateTime.TryParseExact (parts[2], "dd-MM-yyyy",null,
                     System.Globalization.DateTimeStyles.None, out DateTime existingDate) &&
                     TimeSpan.TryParse(parts[3], out TimeSpan existingTime)
                     && existingDate == ticket.Date && existingTime == ticket.Time)
                 {
-                    int existingTickets = int.TryParse(parts[4], out int temp) ? temp : 0;
+                    int existingTickets = int.TryParse(parts[5], out int temp) ? temp : 0;
                     int updatedTickets = existingTickets + ticket.AvailableTickets;
-                    lines[i] = $"{parts[0]},{parts[1]},{parts[2]},{parts[3]},{updatedTickets}";
+                    lines[i] = $"{parts[0]},{parts[1]},{parts[2]},{parts[3]},{parts[4]},{updatedTickets}";
                     ticketsExists = true;
 
                    
@@ -74,11 +76,11 @@ namespace Event_App
             if (!ticketsExists)
             {
                 string timeStr = ticket.Time.ToString(@"hh\:mm");
-                string line = $"{ticket.Type},{ticket.Event},{ticket.Date:dd-MM-yyyy},{timeStr},{ticket.AvailableTickets}";
+                string line = $"{ticket.Type},{ticket.Event},{ticket.Date:dd-MM-yyyy},{timeStr},{ticket.TicketType},{ticket.AvailableTickets}";
                 lines.Add(line);
-                MessageBox.Show("Tickets added successfully.");
+                MessageBox.Show("Tickets added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            else MessageBox.Show("Number of tickets updated successfully.");
+            else MessageBox.Show("Number of tickets updated successfully.","Success",MessageBoxButton.OK, MessageBoxImage.Information);
             File.WriteAllLines(file, lines);
         }
     }
