@@ -4,27 +4,13 @@ namespace Event_App
 {
     public partial class MainPanel : Window
     {
-        private readonly User? _user; 
         public MainPanel()
         {
             InitializeComponent(); 
-            AdminPanelButton.Visibility = Visibility.Collapsed;
-        } 
-        public MainPanel(string username)
-        { 
-            _user = UserRepository.FindByUsername(username) ?? UserRepository.FindByEmail(username); 
-            InitializeComponent(); 
-            if (_user != null && Admin.IsAdmin(_user.Username))
-            {
-                AdminPanelButton.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                AdminPanelButton.Visibility = Visibility.Collapsed;
-            }
-        }
+            if (UserSession.CurrentUser != null && UserSession.CurrentUser.Role.Equals("Admin",StringComparison.OrdinalIgnoreCase)) AdminPanelButton.Visibility = Visibility.Visible;
+            else AdminPanelButton.Visibility = Visibility.Collapsed;
 
-       
+        }        
         private void Favorite_Button(object sender, RoutedEventArgs e)
         {
                 ViewFavoriteTickets favoriteTicketsWindow = new();
@@ -46,13 +32,19 @@ namespace Event_App
         }
         private void LogOut_Button(object sender, RoutedEventArgs e)
         {
+            UserSession.clearUser();
             Login loginWindow = new();
             loginWindow.Show();
             this.Close();
         }
         private void AdminPanel_Button(object sender, RoutedEventArgs e)
         {
-            AdminWindow admin = new(_user);
+            if (UserSession.CurrentUser == null || !UserSession.CurrentUser.Role.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Access denied. Admin privileges required.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            AdminWindow admin = new();
             admin.Show();
             this.Close();
         }

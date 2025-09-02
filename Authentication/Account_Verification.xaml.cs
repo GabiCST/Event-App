@@ -22,7 +22,7 @@ namespace Event_App
                 MessageBox.Show("Invalid username or email.", "Authentication Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            User user = new(Username.Text, Email.Text, string.Empty, string.Empty);
+            User user = new(0,Username.Text, Email.Text, string.Empty, string.Empty, string.Empty);
 
             Reset_Password resetPasswordWindow = new(user);
             resetPasswordWindow.Show();

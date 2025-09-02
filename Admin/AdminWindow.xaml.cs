@@ -5,15 +5,13 @@ namespace Event_App
 
     public partial class AdminWindow : Window
     {
-        private readonly User? _user;
-        public AdminWindow(User user)
+        public AdminWindow()
         {
-            _user = user;
             InitializeComponent();
         }
         public void Back_Button(object sender, RoutedEventArgs e)
         {
-            MainPanel mainPanel = new(_user?.Username ?? string.Empty);
+            MainPanel mainPanel = new();
             mainPanel.Show();
             this.Close();
         }
@@ -25,13 +23,13 @@ namespace Event_App
         }
         private void AddTickets_Button(object sender, RoutedEventArgs e)
         {
-            if (_user == null)
+            if (UserSession.CurrentUser == null || !UserSession.CurrentUser.Role.Equals("Admin", StringComparison.OrdinalIgnoreCase))
             {
-            MessageBox.Show("User information is missing. Cannot add tickets.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            return;
+                MessageBox.Show("Access denied. Admin privileges required.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
 
-            AddTickets addticket = new(_user);
+            AddTickets addticket = new();
             addticket.Show();
             this.Close();
         }
@@ -40,17 +38,15 @@ namespace Event_App
         }
         private void EventDeletion_Button(object sender, RoutedEventArgs e)
         {
-            if (_user == null)
+            if (UserSession.CurrentUser == null || !UserSession.CurrentUser.Role.Equals("Admin", StringComparison.OrdinalIgnoreCase))
             {
-                MessageBox.Show("User information is missing. Cannot delete events.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Access denied. Admin privileges required.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            else
-            {
-                EventDeletion eventDeletion = new(_user);
-                eventDeletion.Show();
-                this.Close();
-            }
+            
+            EventDeletion eventDeletion = new();
+            eventDeletion.Show();
+            this.Close();
         }
         private void ViewCreatedAccounts_Button(object sender, RoutedEventArgs e)
         { 

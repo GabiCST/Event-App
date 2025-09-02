@@ -25,10 +25,14 @@ namespace Event_App
             {
                 MessageBox.Show("Invalid user/email or password.", "Authentication Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
-            } 
-            MainPanel mainPanelWindow = new(user.Username);
-            mainPanelWindow.Show();
-            this.Close();
+            }
+            else
+            {
+                UserSession.setUser(user);
+                MainPanel mainPanelWindow = new();
+                mainPanelWindow.Show();
+                this.Close();
+            }
         }
         private void Forgot_Password(object sender, RoutedEventArgs e)
         {

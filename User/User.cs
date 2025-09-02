@@ -2,7 +2,7 @@
 
 namespace Event_App
 {
-    public class User(string username, string email, string password, string confpassword)
+    public class User(int Id, string username, string email, string password, string confpassword, string role)
     {
         private const int UserMinLength = 4;
         private const int UserMaxLength = 20;
@@ -11,10 +11,13 @@ namespace Event_App
         private static readonly Regex UserRegex = new (@"^[a-zA-Z0-9_]+$");
         private static readonly Regex EmailRegex = new (@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
 
+        public int Id { get; set; } = Id;   
         public string Username { get; set; } = username;
         public string Email { get; set; } = email;
         public string Password { get; set; } = password;
-        public string ConfirmPassword { get; set; } = confpassword;
+        public string ConfirmPassword { get; set; } = confpassword; 
+        public string Role { get; set; } = role;
+
         public string? UserIsValid()
         {
             if (string.IsNullOrWhiteSpace(Username))

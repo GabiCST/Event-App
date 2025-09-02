@@ -16,7 +16,7 @@ namespace Event_App
         }
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            var user = new User(Username.Text, Email.Text, Password.Password, ConfPassword.Password);
+            var user = new User(0,Username.Text, Email.Text, Password.Password, ConfPassword.Password, "User");
 
             string? validationError = user.UserIsValid();
             if (validationError != null)
@@ -31,7 +31,8 @@ namespace Event_App
             }
             MessageBox.Show("Registration successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            MainPanel mainPanel = new(Username.Text);
+            UserSession.setUser(user);
+            MainPanel mainPanel = new();
             mainPanel.Show();
             this.Close();
         }

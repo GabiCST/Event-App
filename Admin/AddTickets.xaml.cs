@@ -5,16 +5,14 @@ namespace Event_App
 {
     public partial class AddTickets : Window
     {
-        private readonly User? _user;
-        public AddTickets(User user)
-        {
-            _user = user;
+        public AddTickets()
+        { 
             InitializeComponent();
         }
 
         private void Back_Button(object sender, RoutedEventArgs e)
         {
-            AdminWindow adminWindow = new(_user!);
+            AdminWindow adminWindow = new();
             adminWindow.Show();
             this.Close();
         }
