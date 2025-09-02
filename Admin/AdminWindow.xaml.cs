@@ -38,6 +38,20 @@ namespace Event_App
         private void AvailableTickets_Button(object sender, RoutedEventArgs e)
         { 
         }
+        private void EventDeletion_Button(object sender, RoutedEventArgs e)
+        {
+            if (_user == null)
+            {
+                MessageBox.Show("User information is missing. Cannot delete events.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            else
+            {
+                EventDeletion eventDeletion = new(_user);
+                eventDeletion.Show();
+                this.Close();
+            }
+        }
         private void ViewCreatedAccounts_Button(object sender, RoutedEventArgs e)
         { 
         }

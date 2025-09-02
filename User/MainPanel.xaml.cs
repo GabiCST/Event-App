@@ -32,21 +32,20 @@ namespace Event_App
         }
         private void Favorite_Button(object sender, RoutedEventArgs e)
         {
-            CheckFavoriteEvents checkFavoriteEvents = new();
-            checkFavoriteEvents.Show();
+                
+        }
+        private void Purchased_Tickets_Button(object sender, RoutedEventArgs e)
+        {
+            ViewPurchasedTickets purchasedTicketsWindow = new();
+            purchasedTicketsWindow.Show();
             this.Close();
         }
-        private void AvailableTicketAll_Button(object sender, RoutedEventArgs e)
+
+        private void Events_Button(object sender, RoutedEventArgs e)
         {
-            AvailableTickets availableTicketsWindow = new();
-            availableTicketsWindow.Show();
-            this.Close();
-        }
-        private void AvailableTicketFavorite_Button(object sender, RoutedEventArgs e)
-        {
-            CheckFavoriteEvents checkFavoriteEvents = new();
-            checkFavoriteEvents.Show();
-            this.Close();
+             ViewTickets viewTicketsWindow = new();
+             viewTicketsWindow.Show();
+             this.Close();
         }
         private void LogOut_Button(object sender, RoutedEventArgs e)
         {
