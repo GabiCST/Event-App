@@ -2,16 +2,14 @@
 
 namespace Event_App
 {
-    public class User(int Id, string username, string email, string password, string confpassword, string role)
+    public class User(string username, string email, string password, string confpassword, string role)
     {
         private const int UserMinLength = 4;
         private const int UserMaxLength = 20;
         private const int PasswordMinLength = 6;
 
         private static readonly Regex UserRegex = new (@"^[a-zA-Z0-9_]+$");
-        private static readonly Regex EmailRegex = new (@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
-
-        public int Id { get; set; } = Id;   
+        private static readonly Regex EmailRegex = new (@"^[^@\s]+@[^@\s]+\.[^@\s]+$"); 
         public string Username { get; set; } = username;
         public string Email { get; set; } = email;
         public string Password { get; set; } = password;

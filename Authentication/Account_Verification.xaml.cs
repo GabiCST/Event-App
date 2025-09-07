@@ -1,5 +1,6 @@
-﻿using System.Windows;
-
+﻿using Microsoft.Data.SqlClient;
+using System.Windows;
+using System.Data.OleDb;
 namespace Event_App
 {
     public partial class Account_Verification : Window
@@ -17,12 +18,32 @@ namespace Event_App
                 return;
             }
 
-            if (!UserRepository.ValidateCredentialsPassword(Username.Text, Email.Text))
+            User? user;
+            using var conn = new OleDbConnection(App.Configuration["ConnectionStrings:DefaultConnection"]);
+            conn.Open();
+            using var cmd = new OleDbCommand(
+                "SELECT username, email, password, role " +
+                "FROM users " +
+                "WHERE username=? AND email=?", conn);
+            cmd.Parameters.AddWithValue("?", Username.Text);
+            cmd.Parameters.AddWithValue("?", Email.Text);
+
+            using var reader = cmd.ExecuteReader();
+            if(reader.Read())
+            {
+                user = new User(reader["username"].ToString(),
+                           reader["email"].ToString(),
+                           reader["password"].ToString(),
+                           reader["password"].ToString(),
+                           reader["role"].ToString()
+                           );
+            }
+
+            else
             {
                 MessageBox.Show("Invalid username or email.", "Authentication Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            User user = new(0,Username.Text, Email.Text, string.Empty, string.Empty, string.Empty);
 
             Reset_Password resetPasswordWindow = new(user);
             resetPasswordWindow.Show();

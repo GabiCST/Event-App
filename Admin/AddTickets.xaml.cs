@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Event_App.Admin;
+using System;
 using System.Windows;
 
 namespace Event_App
@@ -6,7 +7,7 @@ namespace Event_App
     public partial class AddTickets : Window
     {
         public AddTickets()
-        { 
+        {
             InitializeComponent();
         }
 
@@ -25,12 +26,11 @@ namespace Event_App
                 return;
             }
             DateTime date = DateTextBox.SelectedDate.Value;
-
             int hours = HourTime.Value ?? 0;
             int minutes = MinutesTime.Value ?? 0;
-            TimeSpan time = new (hours, minutes,0);
+            TimeSpan time = new(hours, minutes, 0);
             string TicketType = TicketType_Combo.Text;
-            if(string.IsNullOrWhiteSpace(TicketType)) TicketType= "Standard";
+            if (string.IsNullOrWhiteSpace(TicketType)) TicketType = "Standard";
             int nrTickets = TicketNumber.Value ?? 0;
 
             if (nrTickets == 0)
@@ -39,49 +39,45 @@ namespace Event_App
                 return;
             }
 
+            if (!int.TryParse(PriceTextBox.Text, out int price) || price <= 0)
+            {
+                MessageBox.Show("Invalid price.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            DateTime eventDateTime = date.Date + time;
             var ticket = new Ticket(
-                TypeTextBox.Text, 
+                TypeTextBox.Text,
                 EventTextBox.Text,
-                date,
-                time,
+                LocationTextBox.Text,
+                eventDateTime,
                 TicketType,
+                price,
                 nrTickets
             );
-
-            string file = "tickets.txt";
-            List<string> lines = File.Exists(file) ? File.ReadAllLines(file).ToList() : new List<string>();
-            bool ticketsExists = false;
-
-            
-            for(int i = 0; i < lines.Count; ++i)
+            try
             {
-                var parts = lines[i].Split(',');
-                if(parts.Length >=6 && parts[1] == ticket.Event && parts[4] == ticket.TicketType
-                    && DateTime.TryParseExact (parts[2], "dd-MM-yyyy",null,
-                    System.Globalization.DateTimeStyles.None, out DateTime existingDate) &&
-                    TimeSpan.TryParse(parts[3], out TimeSpan existingTime)
-                    && existingDate == ticket.Date && existingTime == ticket.Time)
+                bool success = TicketRepository.AddOrUpdateTicket(ticket);
+                if (success)
                 {
-                    int existingTickets = int.TryParse(parts[5], out int temp) ? temp : 0;
-                    int updatedTickets = existingTickets + ticket.AvailableTickets;
-                    lines[i] = $"{parts[0]},{parts[1]},{parts[2]},{parts[3]},{parts[4]},{updatedTickets}";
-                    ticketsExists = true;
-
-                   
-                    break;
+                    MessageBox.Show("Ticket added/updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    TypeTextBox.Clear();
+                    EventTextBox.Clear();
+                    LocationTextBox.Clear();
+                    DateTextBox.SelectedDate = null;
+                    HourTime.Value = null;
+                    MinutesTime.Value = null;
+                    TicketType_Combo.SelectedIndex = -1;
+                    TicketNumber.Value = null;
+                }
+                else
+                {
+                    MessageBox.Show("An error occurred while adding/updating the ticket.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-            if (!ticketsExists)
+            catch (Exception ex)
             {
-                string timeStr = ticket.Time.ToString(@"hh\:mm");
-                string line = $"{ticket.Type},{ticket.Event},{ticket.Date:dd-MM-yyyy},{timeStr},{ticket.TicketType},{ticket.AvailableTickets}";
-                lines.Add(line);
-                MessageBox.Show("Tickets added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"DataBase error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else MessageBox.Show("Number of tickets updated successfully.","Success",MessageBoxButton.OK, MessageBoxImage.Information);
-            File.WriteAllLines(file, lines);
         }
     }
-
-    
 }

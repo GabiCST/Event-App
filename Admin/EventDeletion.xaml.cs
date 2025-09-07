@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Event_App.Admin;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -10,65 +11,107 @@ namespace Event_App
         public EventDeletion()
         {
             InitializeComponent();
-            LoadTickets("tickets.txt");
+            LoadTickets();
         }
-        private void LoadTickets(string file)
+        private void LoadTickets()
         {
-            if (!File.Exists(file))
+            var tickets = TicketRepository.GetAllTickets();
+            if (tickets.Count == 0)
             {
-                EventsPanel.Children.Add(new TextBlock { Text = "No events avaliable" });
+                EventsPanel.Children.Add(new TextBlock
+                {
+                    Text = "No events available.",
+                    FontSize = 16,
+                    Foreground = Brushes.Gray,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Margin = new Thickness(10)
+                });
                 return;
             }
-            var lines = File.ReadAllLines(file);
-            foreach (var line in lines)
+            foreach (var ticket in tickets)
             {
-                var parts = line.Split(',');
-                if (parts.Length == 6) AddEvent(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]);
+                AddEventCard(ticket);
             }
         }
-        private void AddEvent(string type, string title, string date, string time, string ticketType, string nrTickets)
+        private void AddEventCard(Ticket ticket)
         {
-           Border card = new()
-           {
-               BorderBrush = System.Windows.Media.Brushes.Black,
-               BorderThickness = new Thickness(1),
-               Margin = new Thickness(5),
-               Padding = new Thickness(10)
-           };
-           
-           StackPanel panel = new();
-           panel.Children.Add(new TextBlock { Text = $"Event type:{type}"});
-           panel.Children.Add(new TextBlock { Text = $"Event: {title}", FontWeight = FontWeights.Bold });
-           panel.Children.Add(new TextBlock { Text = $"Date: {date}" });
-           panel.Children.Add(new TextBlock { Text = $"Time: {time}" });
-           panel.Children.Add(new TextBlock { Text = $"Ticket type: {ticketType}" });
-           panel.Children.Add(new TextBlock { Text = $"Available Tickets: {nrTickets}" });
-           Button deleteButton = new Button
-           {
-               Content = "Delete",
-               Tag = new { Type = type, Title = title, Date = date, Time = time, TicketType = ticketType, NrTickets = nrTickets }
-           };
-            
-            var eventData = deleteButton.Tag;
-            deleteButton.Click += (sender, e) =>
+            Border card = new()
             {
-                 
-                dynamic tag = eventData;
-                var result = MessageBox.Show($"Are you sure you want to delete the event '{tag.Title}'?", "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result != MessageBoxResult.Yes) return;
-                if (deleteButton.Parent is StackPanel panel && panel.Parent is Border border)
+                BorderBrush = Brushes.DarkGray,
+                BorderThickness = new Thickness(1),
+                CornerRadius = new CornerRadius(5),
+                Margin = new Thickness(10),
+                Padding = new Thickness(10),
+                Background = Brushes.White,
+                Effect = new System.Windows.Media.Effects.DropShadowEffect
                 {
-                    EventsPanel.Children.Remove(border);
-                }
-                string file = "tickets.txt";
-                if (File.Exists(file))
-                {
-                    var lines = File.ReadAllLines(file).ToList();
-                    string lineToRemove = $"{tag.Type},{tag.Title},{tag.Date},{tag.Time},{tag.TicketType},{tag.NrTickets}";
-                    lines.RemoveAll(l => l.Trim() == lineToRemove);
-                    File.WriteAllLines(file, lines);
+                    Color = Colors.Black,
+                    Direction = 320,
+                    ShadowDepth = 5,
+                    Opacity = 0.25
                 }
             };
+
+            StackPanel panel = new() { Orientation = Orientation.Vertical };
+            panel.Children.Add(new TextBlock
+            {
+                Text = $"{ticket.Type} - {ticket.Event}",
+                FontSize = 18,
+                FontWeight = FontWeights.Bold,
+                Margin = new Thickness(0, 0, 0, 5)
+            });
+
+            panel.Children.Add(new TextBlock
+            {
+                Text = $"Location: {ticket.Location}",
+                FontSize = 14,
+                Margin = new Thickness(0, 0, 0, 2)
+            });
+            panel.Children.Add(new TextBlock
+            {
+                Text = $"Date & time: {ticket.EventDateTime:dd.MM.yyyy HH:mm}",
+                FontSize = 14,
+                Margin = new Thickness(0, 0, 0, 2)
+            });
+
+            panel.Children.Add(new TextBlock
+            {
+                Text = $"Ticket Type: {ticket.TicketType}",
+                FontSize = 14,
+                Margin = new Thickness(0, 0, 0, 2)
+            });
+            panel.Children.Add(new TextBlock
+            {
+                Text = $"Price: ${ticket.Price}",
+                FontSize = 14,
+                Margin = new Thickness(0, 0, 0, 10)
+            });
+            Button deleteButton = new()
+            {
+                Content = "Delete Event",
+                Padding = new Thickness(5, 2, 5, 2),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Cursor = System.Windows.Input.Cursors.Hand
+            };
+            deleteButton.Click += (s, e) =>
+            {
+                var result = MessageBox.Show($"Are you sure you want to delete the event '{ticket.Event}'?", "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    if (TicketRepository.DeleteTicket(ticket))
+                    {
+                        EventsPanel.Children.Clear();
+                        LoadTickets();
+                        MessageBox.Show("Event deleted successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to delete the event.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            };
+
             panel.Children.Add(deleteButton);
             card.Child = panel;
             EventsPanel.Children.Add(card);
