@@ -1,87 +1,110 @@
-﻿using System.IO;
-using System.Windows;
+﻿using Microsoft.Extensions.Configuration;
+using System.Data.OleDb;
 
 namespace Event_App
 {
     public class UserRepository
     {
-        private static readonly string file = "users.txt";
 
+        private static readonly string connectionString = App.Configuration["ConnectionStrings:DefaultConnection"];
         public static bool AddUser(User user)
         {
-            if(FindByEmail(user.Email) != null || FindByUsername(user.Username)!= null) return false;
-            if(user.Id == 0) user.Id = GenerateUserId();
-            string line = $"{user.Id},{user.Username},{user.Email},{user.Password},{user.Role}";
-            File.AppendAllLines(file, new List<string> { line });
-            return true;
-        }
-        public static User? FindByEmail(string email)
-        {
-            if(!File.Exists(file)) return null;
-            return File.ReadAllLines(file).Select(ParseUserLine).FirstOrDefault(u => u!= null && u.Email == email);
-        }
-        public static User? FindByUsername(string username)
-        {
-            if (!File.Exists(file)) return null;
-            return File.ReadAllLines(file).Select(ParseUserLine).FirstOrDefault(u => u != null && u.Username == username);
-        }
-        public static List<User> GetAllUsers()
-        {
-            if (!File.Exists(file)) return new List<User>();
-            return File.ReadAllLines(file).Select(ParseUserLine).Where(u => u != null).ToList()!;
-        }
-        private static User? ParseUserLine(string line)
-        {
-            var parts = line.Split(',');
-            if (parts.Length != 5) return null;
-            if(!int.TryParse(parts[0], out int id)) return null;
-            return new User(id, parts[1], parts[2], parts[3], parts[3], parts[4]);
-        }
-        private static int GenerateUserId()
-        {
-            if(File.Exists(file))
-            {
-                var lines = File.ReadAllLines(file);
-                if (lines.Length > 0)
-                {
-                    var parts = lines[^1].Split(',');
-                    if (parts.Length >= 1 && int.TryParse(parts[0], out int lastId)) return ++lastId;
-                }
-            }
-            return 1;
-        }
+            if (FindByUsername(user.Username) != null || FindByEmail(user.Email) != null)
+                return false;
 
-        public static bool ValidateCredentials(string usernameOrEmail, string password)
-        {
-            if (!File.Exists(file)) return false;
-            return File.ReadAllLines(file).Select(ParseUserLine).Any(u => u != null && (u.Email == usernameOrEmail || u.Username == usernameOrEmail) && u.Password == password);
+            using var conn = new OleDbConnection(connectionString);
+            conn.Open();
+            using var cmd = new OleDbCommand(
+            "INSERT INTO users ([username], [email], [password], [role]) " +
+            "VALUES (?,?,?,?)", conn);
+            cmd.Parameters.AddWithValue("?", user.Username);
+            cmd.Parameters.AddWithValue("?", user.Email);
+            cmd.Parameters.AddWithValue("?", user.Password);
+            cmd.Parameters.AddWithValue("?", user.Role);
+            int rows = cmd.ExecuteNonQuery();
+            return rows > 0;
         }
-        public static bool ValidateCredentialsPassword(string username, string email)
-        {
-            if (!File.Exists(file)) return false;
-            return File.ReadAllLines(file).Select(ParseUserLine).Any(u => u != null && u.Username == username && u.Email == email);
-        }
-        public static bool PasswordChange(User user, string password)
-        {
-            var users = GetAllUsers();
-            var userToUpdate = users.FirstOrDefault(u => u != null && u.Email == user.Email);
-            if (userToUpdate == null) return false;
-            userToUpdate.Password = password;
-            var lines = users.Select(u => $"{u.Id},{u.Username},{u.Email},{u.Password},{u.Role}");
-            File.WriteAllLines(file,lines);
-            return true;
-        }
-
         public static User? Authenticate(string usernameOrEmail, string password)
         {
-            if (!File.Exists(file)) return null;
-            var input = usernameOrEmail.Trim();
-            return File.ReadAllLines(file)
-                .Select(ParseUserLine)
-                .FirstOrDefault(u => u != null &&
-                    (u.Email.Equals(input, StringComparison.OrdinalIgnoreCase) ||
-                    u.Username.Equals(input, StringComparison.OrdinalIgnoreCase)) &&  
-                    u.Password == password);
-        } 
+            using var conn = new OleDbConnection(connectionString);
+            conn.Open();
+            using var cmd = new OleDbCommand(
+                "SELECT [username], [email], [password],[role] " +
+                "FROM users " +
+                "WHERE ([username]=? or [email]=?) AND [password]=?", conn);
+            cmd.Parameters.AddWithValue("?", usernameOrEmail);
+            cmd.Parameters.AddWithValue("?", usernameOrEmail);
+            cmd.Parameters.AddWithValue("?", password);
+            using var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                return new User(reader["username"].ToString(),
+                                  reader["email"].ToString(),
+                                  reader["password"].ToString(),
+                                  reader["password"].ToString(),
+                                  reader["role"].ToString());
+            }
+            return null;
+        }
+
+        
+        
+       
+        public static bool PasswordChange(User user, string password)
+        {
+            using var conn = new OleDbConnection(connectionString);
+            conn.Open();
+            using var cmd = new OleDbCommand(
+                "UPDATE users " +
+                "SET [password]=? " +
+                "WHERE [username]=? AND [email]=?", conn);
+            cmd.Parameters.AddWithValue("?", password); 
+            cmd.Parameters.AddWithValue("?", user.Username);
+            cmd.Parameters.AddWithValue("?", user.Email);
+            int rows = cmd.ExecuteNonQuery();
+            return rows > 0;
+        }
+
+
+        private static User? FindByEmail(string email)
+        {
+            using var conn = new OleDbConnection(connectionString);
+            conn.Open();
+            using var cmd = new OleDbCommand(
+                "SELECT [username], [email], [password], [role] " +
+                "FROM users " +
+                "WHERE [email]=?", conn);
+            cmd.Parameters.AddWithValue("?", email);
+            using var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                return new User(reader["username"].ToString(),
+                                reader["email"].ToString(),
+                                reader["password"].ToString(),
+                                reader["password"].ToString(),
+                                reader["role"].ToString());
+            }
+            return null;
+        }
+        private static User? FindByUsername(string username)
+        {
+            using var conn = new OleDbConnection(connectionString);
+            conn.Open();
+            using var cmd = new OleDbCommand(
+                "SELECT [username], [email], [password], [role] " +
+                "FROM users " +
+                "WHERE [username]=?", conn);
+            cmd.Parameters.AddWithValue("?", username);
+            using var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                return new User(reader["username"].ToString(),
+                                  reader["email"].ToString(),
+                                  reader["password"].ToString(),
+                                  reader["password"].ToString(),
+                                  reader["role"].ToString());
+            }
+            return null;
+        }
     }
 }

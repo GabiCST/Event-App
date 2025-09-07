@@ -8,7 +8,7 @@
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     Title="AddTickets"
     Width="500"
-    Height="450"
+    Height="550"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
@@ -16,17 +16,21 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
 
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+
             <Label
                 Name="Type"
                 Grid.Row="0"
@@ -60,15 +64,15 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center" />
             <Label
-                Name="Date"
+                Name="Location"
                 Grid.Row="2"
                 Grid.Column="0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Content="Date"
+                Content="Location"
                 FontSize="30" />
-            <DatePicker
-                Name="DateTextBox"
+            <TextBox
+                Name="LocationTextBox"
                 Grid.Row="2"
                 Grid.Column="1"
                 Width="200"
@@ -76,15 +80,31 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center" />
             <Label
-                Name="Time"
+                Name="Date"
                 Grid.Row="3"
+                Grid.Column="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="Date"
+                FontSize="30" />
+            <DatePicker
+                Name="DateTextBox"
+                Grid.Row="3"
+                Grid.Column="1"
+                Width="200"
+                Height="25"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center" />
+            <Label
+                Name="Time"
+                Grid.Row="4"
                 Grid.Column="0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Content="Time"
                 FontSize="30" />
             <StackPanel
-                Grid.Row="3"
+                Grid.Row="4"
                 Grid.Column="1"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
@@ -110,7 +130,7 @@
                     Value="0" />
             </StackPanel>
             <Label
-                Grid.Row="4"
+                Grid.Row="5"
                 Grid.Column="0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
@@ -118,7 +138,7 @@
                 FontSize="30" />
             <ComboBox
                 x:Name="TicketType_Combo"
-                Grid.Row="4"
+                Grid.Row="5"
                 Grid.Column="1"
                 Width="100"
                 Height="25">
@@ -127,8 +147,24 @@
                 <ComboBoxItem Content="VIP" />
             </ComboBox>
             <Label
+                Name="Price"
+                Grid.Row="6"
+                Grid.Column="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="Price"
+                FontSize="30" />
+            <TextBox
+                Name="PriceTextBox"
+                Grid.Row="6"
+                Grid.Column="1"
+                Width="200"
+                Height="25"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center" />
+            <Label
                 Name="TicketNumberLabel"
-                Grid.Row="5"
+                Grid.Row="7"
                 Grid.Column="0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
@@ -136,7 +172,7 @@
                 FontSize="30" />
             <xctk:IntegerUpDown
                 Name="TicketNumber"
-                Grid.Row="5"
+                Grid.Row="7"
                 Grid.Column="1"
                 Width="40"
                 Height="25"
@@ -146,25 +182,24 @@
                 Maximum="9999"
                 Minimum="0"
                 Value="0" />
-        </Grid>
-
-        <StackPanel Orientation="Horizontal">
             <Button
+                Grid.Row="8"
+                Grid.Column="0"
                 Width="100"
                 Height="30"
-                Margin="30,50,0,0"
                 HorizontalAlignment="Center"
                 Click="Back_Button"
                 Content="Back"
                 FontSize="16" />
             <Button
+                Grid.Row="8"
+                Grid.Column="1"
                 Width="200"
                 Height="30"
-                Margin="145,50,0,0"
                 HorizontalAlignment="Center"
                 Click="Add_Ticket"
                 Content="Add"
                 FontSize="16" />
-        </StackPanel>
+        </Grid>
     </StackPanel>
 </Window>
