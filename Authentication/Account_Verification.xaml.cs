@@ -31,7 +31,8 @@ namespace Event_App
             using var reader = cmd.ExecuteReader();
             if(reader.Read())
             {
-                user = new User(reader["username"].ToString(),
+                user = new User(Convert.ToInt32(reader["user_id"]),
+                           reader["username"].ToString(),
                            reader["email"].ToString(),
                            reader["password"].ToString(),
                            reader["password"].ToString(),

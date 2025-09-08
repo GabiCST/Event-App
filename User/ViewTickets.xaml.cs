@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Event_App.Admin;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,14 +21,139 @@ namespace Event_App
     {
         public ViewTickets()
         {
-            InitializeComponent(); 
+            InitializeComponent();
+            LoadTickets();
+        }
+        private void LoadTickets()
+        {
+            var tickets = TicketRepository.GetAllTickets();
+            if (tickets.Count == 0)
+            {
+                EventsPanel.Children.Add(new TextBlock
+                {
+                    Text = "No events available.",
+                    FontSize = 16,
+                    Foreground = Brushes.Gray,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Margin = new Thickness(10)
+                });
+                return;
+            }
+            foreach (var ticket in tickets)
+            {
+                AddEventCard(ticket);
+            }
+        }
+        private void AddEventCard(Ticket ticket)
+        {
+            Border card = new()
+            {
+                BorderBrush = Brushes.DarkGray,
+                BorderThickness = new Thickness(1),
+                CornerRadius = new CornerRadius(5),
+                Margin = new Thickness(10),
+                Padding = new Thickness(10),
+                Background = Brushes.White,
+                Effect = new System.Windows.Media.Effects.DropShadowEffect
+                {
+                    Color = Colors.Black,
+                    Direction = 320,
+                    ShadowDepth = 5,
+                    Opacity = 0.25
+                }
+            };
+
+            StackPanel panel = new() { Orientation = Orientation.Vertical };
+            panel.Children.Add(new TextBlock
+            {
+                Text = $"{ticket.Type} - {ticket.Event}",
+                FontSize = 18,
+                FontWeight = FontWeights.Bold,
+                Margin = new Thickness(0, 0, 0, 5)
+            });
+
+            panel.Children.Add(new TextBlock
+            {
+                Text = $"Location: {ticket.Location}",
+                FontSize = 14,
+                Margin = new Thickness(0, 0, 0, 2)
+            });
+            panel.Children.Add(new TextBlock
+            {
+                Text = $"Date & time: {ticket.EventDateTime:dd.MM.yyyy HH:mm}",
+                FontSize = 14,
+                Margin = new Thickness(0, 0, 0, 2)
+            });
+
+            panel.Children.Add(new TextBlock
+            {
+                Text = $"Ticket Type: {ticket.TicketType}",
+                FontSize = 14,
+                Margin = new Thickness(0, 0, 0, 2)
+            });
+            panel.Children.Add(new TextBlock
+            {
+                Text = $"Price: ${ticket.Price}",
+                FontSize = 14,
+                Margin = new Thickness(0, 0, 0, 10)
+            });
+            Button addfavorite = new()
+            {
+                Content = "Add event to favorite list",
+                Padding = new Thickness(5, 2, 5, 2),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Cursor = System.Windows.Input.Cursors.Hand
+            };
+            Button ticketpur = new()
+            {
+                Content = "Purchase ticket",
+                Padding = new Thickness(5, 2, 5, 2),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Cursor = System.Windows.Input.Cursors.Hand
+            };
+            addfavorite.Click += (s, e) =>
+            {
+                var result = MessageBox.Show($"Are you sure you want to add the event '{ticket.Event}' to your favorite list?", "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    if (true)//)
+                    { 
+                        MessageBox.Show("Event added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to add the event.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            };
+            ticketpur.Click += (s, e) =>
+            {
+                var result = MessageBox.Show($"Are you sure you want to purchase the ticket for '{ticket.Event}'?", "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    if (true)//)
+                    {
+                        MessageBox.Show("Event purchased successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to purchase ticket for the event.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            };
+
+            panel.Children.Add(addfavorite);
+            panel.Children.Add(ticketpur);
+            card.Child = panel;
+            EventsPanel.Children.Add(card);
         }
         private void Back_Button(object sender, RoutedEventArgs e)
         {
-            MainPanel panel = new();
-            panel.Show();
+            MainPanel mainPanel = new();
+            mainPanel.Show();
             this.Close();
         }
-        
     }
 }

@@ -45,7 +45,7 @@ namespace Event_App
                 return;
             }
             DateTime eventDateTime = date.Date + time;
-            var ticket = new Ticket(
+            var ticket = new Ticket(0,
                 TypeTextBox.Text,
                 EventTextBox.Text,
                 LocationTextBox.Text,

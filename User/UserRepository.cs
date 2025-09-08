@@ -29,7 +29,7 @@ namespace Event_App
             using var conn = new OleDbConnection(connectionString);
             conn.Open();
             using var cmd = new OleDbCommand(
-                "SELECT [username], [email], [password],[role] " +
+                "SELECT [user_id],[username], [email], [password],[role] " +
                 "FROM users " +
                 "WHERE ([username]=? or [email]=?) AND [password]=?", conn);
             cmd.Parameters.AddWithValue("?", usernameOrEmail);
@@ -38,18 +38,16 @@ namespace Event_App
             using var reader = cmd.ExecuteReader();
             if (reader.Read())
             {
-                return new User(reader["username"].ToString(),
+                return new User(Convert.ToInt32(reader["user_id"]),
+                                  reader["username"].ToString(),
                                   reader["email"].ToString(),
                                   reader["password"].ToString(),
                                   reader["password"].ToString(),
                                   reader["role"].ToString());
             }
-            return null;
+                return null;
         }
 
-        
-        
-       
         public static bool PasswordChange(User user, string password)
         {
             using var conn = new OleDbConnection(connectionString);
@@ -78,7 +76,8 @@ namespace Event_App
             using var reader = cmd.ExecuteReader();
             if (reader.Read())
             {
-                return new User(reader["username"].ToString(),
+                return new User(Convert.ToInt32(reader["user_id"]),
+                                reader["username"].ToString(),
                                 reader["email"].ToString(),
                                 reader["password"].ToString(),
                                 reader["password"].ToString(),
@@ -98,7 +97,8 @@ namespace Event_App
             using var reader = cmd.ExecuteReader();
             if (reader.Read())
             {
-                return new User(reader["username"].ToString(),
+                return new User(Convert.ToInt32(reader["user_id"]),
+                                  reader["username"].ToString(),
                                   reader["email"].ToString(),
                                   reader["password"].ToString(),
                                   reader["password"].ToString(),
