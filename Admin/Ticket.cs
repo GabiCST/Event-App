@@ -1,7 +1,8 @@
 ﻿namespace Event_App
 { 
-    public class Ticket(string type, string eventName, string location ,DateTime date,string TicketType, int price, int nrTickets)
+    public class Ticket(int id, string type, string eventName, string location ,DateTime date,string TicketType, int price, int nrTickets)
     {
+        public int Id { get; set; } = id;
         public string Type { get; set; } = type;
         public string Event { get; set; } = eventName;
         public string Location { get; set; } = location;
