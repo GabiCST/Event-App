@@ -36,16 +36,16 @@ namespace Event_App
         private void AvailableTickets_Button(object sender, RoutedEventArgs e)
         { 
         }
-        private void EventDeletion_Button(object sender, RoutedEventArgs e)
+        private void TicketM_Button(object sender, RoutedEventArgs e)
         {
             if (UserSession.CurrentUser == null || !UserSession.CurrentUser.Role.Equals("Admin", StringComparison.OrdinalIgnoreCase))
             {
                 MessageBox.Show("Access denied. Admin privileges required.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            
-            EventDeletion eventDeletion = new();
-            eventDeletion.Show();
+
+            TicketManager TicketM = new();
+            TicketM.Show();
             this.Close();
         }
         private void ViewCreatedAccounts_Button(object sender, RoutedEventArgs e)

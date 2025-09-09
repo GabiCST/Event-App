@@ -7,14 +7,14 @@ namespace Event_App.Admin
     {
         private static readonly string connectionString = App.Configuration["ConnectionStrings:DefaultConnection"];
 
-        public static bool AddOrUpdateTicket(Ticket ticket)
+        public static bool AddTicket(Ticket ticket)
         {
             using var conn = new OleDbConnection(connectionString);
             conn.Open();
             using var checkcmd = new OleDbCommand(
                 "Select [ticket_id],[ticket_number] " +
                 "FROM tickets " +
-                "WHERE [event_type]=? AND [event_title]=? AND [location]=? AND [ticket_type]=? and [event_datetime]=?", conn);
+                "WHERE [event_type]=? AND [event_title]=? AND [location]=? AND [ticket_type]=? AND [event_datetime]=?", conn);
             checkcmd.Parameters.AddWithValue("?", ticket.Type);
             checkcmd.Parameters.AddWithValue("?", ticket.Event);
             checkcmd.Parameters.AddWithValue("?", ticket.Location);
@@ -24,22 +24,14 @@ namespace Event_App.Admin
             using var reader = checkcmd.ExecuteReader();
             if (reader.Read())
             { 
-                int ticketid = Convert.ToInt32(reader["ticket_id"]); 
-                int current = Convert.ToInt32(reader["ticket_number"]);
-                int updated = current + ticket.AvailableTickets;
-                using var updateCmd = new OleDbCommand(
-                    "UPDATE Tickets " +
-                    "SET [ticket_number]=? " +
-                    "WHERE [ticket_id]=?", conn);
-                updateCmd.Parameters.AddWithValue("?", updated);
-                updateCmd.Parameters.AddWithValue("?", ticketid);
-                return updateCmd.ExecuteNonQuery() > 0;
+                MessageBox.Show("Ticket already exists in database.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                return false;
             }
             else
             {
                 using var insertCmd = new OleDbCommand(
-                    "INSERT INTO tickets ([event_type], [event_title], [location], [event_datetime] ,[ticket_type], [price],[ticket_number]) " +
-                    "VALUES (?,?,?,?,?,?,?)", conn);
+                    "INSERT INTO tickets ([event_type], [event_title], [location], [event_datetime] ,[ticket_type], [price],[ticket_number],[availability]) " +
+                    "VALUES (?,?,?,?,?,?,?,?)", conn);
                 insertCmd.Parameters.AddWithValue("?", ticket.Type);
                 insertCmd.Parameters.AddWithValue("?", ticket.Event);
                 insertCmd.Parameters.AddWithValue("?", ticket.Location);
@@ -47,8 +39,28 @@ namespace Event_App.Admin
                 insertCmd.Parameters.AddWithValue("?", ticket.TicketType);
                 insertCmd.Parameters.AddWithValue("?", ticket.Price);
                 insertCmd.Parameters.AddWithValue("?", ticket.AvailableTickets);
+                insertCmd.Parameters.AddWithValue("?", true);
                 return insertCmd.ExecuteNonQuery() > 0;
             }
+        }
+        public static bool UpdateTicket(Ticket ticket)
+        {
+            using var conn = new OleDbConnection(connectionString);
+            conn.Open();
+            using var cmd = new OleDbCommand(
+                "UPDATE tickets " +
+                "SET [event_type]=?, [event_title]=?, [location]=?, [event_datetime]=?, [ticket_type]=?, [price]=?, [ticket_number]=?, [availability]=? " +
+                "WHERE [ticket_id]=?", conn);
+            cmd.Parameters.AddWithValue("?", ticket.Type);
+            cmd.Parameters.AddWithValue("?", ticket.Event);
+            cmd.Parameters.AddWithValue("?", ticket.Location);
+            cmd.Parameters.AddWithValue("?", ticket.EventDateTime);
+            cmd.Parameters.AddWithValue("?", ticket.TicketType);
+            cmd.Parameters.AddWithValue("?", ticket.Price);
+            cmd.Parameters.AddWithValue("?", ticket.AvailableTickets);
+            cmd.Parameters.AddWithValue("?", ticket.IsAvailable);
+            cmd.Parameters.AddWithValue("?", ticket.Id);
+            return cmd.ExecuteNonQuery() > 0;
         }
         public static bool AddTicketToFavorites(Ticket ticket)
         {
@@ -122,22 +134,11 @@ namespace Event_App.Admin
             var tickets = new List<Ticket>();
             using var conn = new OleDbConnection(connectionString);
             conn.Open();
-            using var cmd = new OleDbCommand("SELECT [ticket_id],[event_type], [event_title], [location], [event_datetime], [ticket_type],[price], [ticket_number] FROM tickets", conn);
+            using var cmd = new OleDbCommand("SELECT [t.ticket_id],[t.event_type], [t.event_title], [t.location], [t.event_datetime], [t.ticket_type],[t.price], [t.ticket_number],[t.availability] FROM tickets as t", conn);
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-
-                var ticket = new Ticket(
-                    Convert.ToInt32(reader["ticket_id"]),
-                    reader["event_type"].ToString(),
-                    reader["event_title"].ToString(),
-                    reader["location"].ToString(),
-                    Convert.ToDateTime(reader["event_datetime"]),
-                    reader["ticket_type"].ToString(),
-                    Convert.ToInt32(reader["price"]),
-                    Convert.ToInt32(reader["ticket_number"])
-                );
-                tickets.Add(ticket);
+                tickets.Add(MapReaderToTicket(reader));
             }
             return tickets;
         }
@@ -147,7 +148,7 @@ namespace Event_App.Admin
             using var conn = new OleDbConnection(connectionString);
             conn.Open();
             using var cmd = new OleDbCommand(
-                "SELECT [t.ticket_id], [t.event_type], [t.event_title], [t.location], [t.event_datetime], [t.ticket_type],[t.price], [t.ticket_number],[fe.date_added] " +
+                "SELECT [t.ticket_id], [t.event_type], [t.event_title], [t.location], [t.event_datetime], [t.ticket_type],[t.price], [t.ticket_number],[t.availability],[fe.date_added] " +
                 "FROM tickets AS t INNER JOIN FavoriteEvents AS fe ON t.ticket_id = fe.ticket_id "+
                 "WHERE fe.user_id = ?", conn);
             cmd.Parameters.AddWithValue("?", UserSession.CurrentUser.Id);
@@ -155,17 +156,7 @@ namespace Event_App.Admin
             while (reader.Read())
             {
 
-                var ticket = new Ticket(
-                    Convert.ToInt32(reader["t.ticket_id"]),
-                    reader["t.event_type"].ToString(),
-                    reader["t.event_title"].ToString(),
-                    reader["t.location"].ToString(),
-                    Convert.ToDateTime(reader["t.event_datetime"]),
-                    reader["t.ticket_type"].ToString(),
-                    Convert.ToInt32(reader["t.price"]),
-                    Convert.ToInt32(reader["t.ticket_number"])
-                );
-                tickets.Add(ticket);
+                tickets.Add(MapReaderToTicket(reader));
             }
             return tickets;
         }
@@ -175,29 +166,29 @@ namespace Event_App.Admin
             using var conn = new OleDbConnection(connectionString);
             conn.Open();
             using var cmd = new OleDbCommand(
-                "SELECT [t.ticket_id], [t.event_type], [t.event_title], [t.location], [t.event_datetime], [t.ticket_type],[t.price], [t.ticket_number],[pe.date_added] " +
+                "SELECT [t.ticket_id], [t.event_type], [t.event_title], [t.location], [t.event_datetime], [t.ticket_type],[t.price], [t.ticket_number],[t.availability],[pe.date_added] " +
                 "FROM tickets AS t INNER JOIN PurchasedEvents AS pe ON t.ticket_id = pe.ticket_id " +
                 "WHERE pe.user_id = ?", conn);
             cmd.Parameters.AddWithValue("?", UserSession.CurrentUser.Id);
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-
-                var ticket = new Ticket(
-                    Convert.ToInt32(reader["t.ticket_id"]),
+                tickets.Add(MapReaderToTicket(reader));
+            }
+            return tickets;
+        }
+        private static Ticket MapReaderToTicket(OleDbDataReader reader)
+        {
+            return new Ticket(Convert.ToInt32(reader["t.ticket_id"]),
                     reader["t.event_type"].ToString(),
                     reader["t.event_title"].ToString(),
                     reader["t.location"].ToString(),
                     Convert.ToDateTime(reader["t.event_datetime"]),
                     reader["t.ticket_type"].ToString(),
                     Convert.ToInt32(reader["t.price"]),
-                    Convert.ToInt32(reader["t.ticket_number"])
-                );
-                tickets.Add(ticket);
-            }
-            return tickets;
+                    Convert.ToInt32(reader["t.ticket_number"]),
+                    Convert.ToBoolean(reader["t.availability"]));
         }
-
         public static bool DeleteTicket(Ticket ticket)
         {
             using var conn = new OleDbConnection(connectionString);
