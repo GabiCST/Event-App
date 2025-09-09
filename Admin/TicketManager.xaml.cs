@@ -6,9 +6,9 @@ using System.Windows.Media;
 
 namespace Event_App
 {
-    public partial class EventDeletion : Window
+    public partial class TicketManager : Window
     {
-        public EventDeletion()
+        public TicketManager()
         {
             InitializeComponent();
             LoadTickets();
@@ -111,7 +111,20 @@ namespace Event_App
                     }
                 }
             };
-
+            Button ticketchanger = new()
+            {
+                Content = "Change Ticket Info",
+                Padding = new Thickness(5, 2, 5, 2),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                Margin = new Thickness(0,0,0,10)
+            };
+            ticketchanger.Click += (s, e) =>
+            {
+                UpdateTicketInfo update = new(ticket);
+                update.Show();
+            };
+            panel.Children.Add(ticketchanger);
             panel.Children.Add(deleteButton);
             card.Child = panel;
             EventsPanel.Children.Add(card);
@@ -121,6 +134,11 @@ namespace Event_App
             AdminWindow adminWindow = new();
             adminWindow.Show();
             this.Close();
+        }
+        public void RefreshTickets()
+        {
+            EventsPanel.Children.Clear();
+            LoadTickets();
         }
     }
 }

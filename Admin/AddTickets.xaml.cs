@@ -52,11 +52,12 @@ namespace Event_App
                 eventDateTime,
                 TicketType,
                 price,
-                nrTickets
+                nrTickets,
+                true
             );
             try
             {
-                bool success = TicketRepository.AddOrUpdateTicket(ticket);
+                bool success = TicketRepository.AddTicket(ticket);
                 if (success)
                 {
                     MessageBox.Show("Ticket added/updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -68,6 +69,7 @@ namespace Event_App
                     MinutesTime.Value = null;
                     TicketType_Combo.SelectedIndex = -1;
                     TicketNumber.Value = null;
+                    PriceTextBox.Text = string.Empty;
                 }
                 else
                 {

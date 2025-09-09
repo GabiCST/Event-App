@@ -35,8 +35,8 @@
                 Width="300"
                 Height="30"
                 Margin="10"
-                Click="AvailableTickets_Button"
-                Content="Check available tickets"
+                Click="TicketM_Button"
+                Content="Manage Tickets"
                 FontSize="20" />
             <Button
                 Grid.Row="2"
@@ -45,15 +45,7 @@
                 Margin="10"
                 Click="ViewCreatedAccounts_Button"
                 Content="View created accounts"
-                FontSize="20" />
-            <Button
-                Grid.Row="3"
-                Width="300"
-                Height="30"
-                Margin="10"
-                Click="EventDeletion_Button"
-                Content="Delete event"
-                FontSize="20" />
+                FontSize="20" /> 
             <Button
                 Grid.Row="4"
                 Width="300"
