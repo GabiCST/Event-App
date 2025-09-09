@@ -50,6 +50,73 @@ namespace Event_App.Admin
                 return insertCmd.ExecuteNonQuery() > 0;
             }
         }
+        public static bool AddTicketToFavorites(Ticket ticket)
+        {
+            using var conn = new OleDbConnection(connectionString);
+            conn.Open();
+            using (var checkcmd = new OleDbCommand(
+                "Select count(*) " +
+                "FROM FavoriteEvents " +
+                "WHERE [ticket_id]=? AND [user_id]=?", conn))
+            {
+                checkcmd.Parameters.AddWithValue("?", ticket.Id);
+                checkcmd.Parameters.AddWithValue("?", UserSession.CurrentUser.Id);
+
+                int count = Convert.ToInt32(checkcmd.ExecuteScalar());
+                if (count > 0)
+                {
+                    return false;
+                }
+            }
+            using (var insertCmd = new OleDbCommand(
+                     "INSERT INTO FavoriteEvents ([user_id], [ticket_id], [date_added]) " +
+                     "VALUES (?,?,?)", conn))
+            {
+                insertCmd.Parameters.AddWithValue("?", UserSession.CurrentUser.Id);
+                insertCmd.Parameters.AddWithValue("?", ticket.Id);
+                insertCmd.Parameters.AddWithValue("?", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
+                return insertCmd.ExecuteNonQuery() > 0;
+
+            }
+        }
+        public static bool PurchaseTicket(Ticket ticket)
+        {
+            using var conn = new OleDbConnection(connectionString);
+            conn.Open();
+            using var transaction = conn.BeginTransaction();
+            try
+            {
+                using (var updatecmd = new OleDbCommand(
+                    "Update Tickets " +
+                    "Set [ticket_number] = [ticket_number] - 1 " +
+                    "WHERE ticket_id = ? AND [ticket_number] > 0", conn, transaction))
+                {
+                    updatecmd.Parameters.AddWithValue("?", ticket.Id);
+                    int rowsAffected = updatecmd.ExecuteNonQuery();
+                    if (rowsAffected == 0)
+                    {
+                        transaction.Rollback();
+                        return false;
+                    }
+                }
+                using (var insertcmd = new OleDbCommand(
+                    "Insert INTO PurchasedEvents ([ticket_id], [user_id], [date_added]) " +
+                    "VALUES (?,?,?)", conn, transaction))
+                {
+                    insertcmd.Parameters.AddWithValue("?", ticket.Id);
+                    insertcmd.Parameters.AddWithValue("?", UserSession.CurrentUser.Id);
+                    insertcmd.Parameters.AddWithValue("?", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
+                    insertcmd.ExecuteNonQuery();
+                }
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception)
+            {
+                transaction.Rollback();
+                return false;
+            }
+        }
         public static List<Ticket> GetAllTickets()
         {
             var tickets = new List<Ticket>();
@@ -139,7 +206,14 @@ namespace Event_App.Admin
                 "DELETE FROM tickets " +
                 "WHERE [ticket_id]=?", conn);
             cmd.Parameters.AddWithValue("?", ticket.Id);
-            return cmd.ExecuteNonQuery() > 0;
+            try {
+                return cmd.ExecuteNonQuery() > 0;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Cannot delete ticket that is in use.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
         }
         public static bool DeleteTicketFromFavorite(Ticket ticket)
         {

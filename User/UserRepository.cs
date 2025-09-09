@@ -15,12 +15,13 @@ namespace Event_App
             using var conn = new OleDbConnection(connectionString);
             conn.Open();
             using var cmd = new OleDbCommand(
-            "INSERT INTO users ([username], [email], [password], [role]) " +
-            "VALUES (?,?,?,?)", conn);
+            "INSERT INTO users ([username], [email], [password], [role], [date_added]) " +
+            "VALUES (?,?,?,?,?)", conn);
             cmd.Parameters.AddWithValue("?", user.Username);
             cmd.Parameters.AddWithValue("?", user.Email);
             cmd.Parameters.AddWithValue("?", user.Password);
             cmd.Parameters.AddWithValue("?", user.Role);
+            cmd.Parameters.AddWithValue("?", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
             int rows = cmd.ExecuteNonQuery();
             return rows > 0;
         }
@@ -29,7 +30,7 @@ namespace Event_App
             using var conn = new OleDbConnection(connectionString);
             conn.Open();
             using var cmd = new OleDbCommand(
-                "SELECT [user_id],[username], [email], [password],[role] " +
+                "SELECT [user_id],[username], [email], [password],[role],[date_added] " +
                 "FROM users " +
                 "WHERE ([username]=? or [email]=?) AND [password]=?", conn);
             cmd.Parameters.AddWithValue("?", usernameOrEmail);
@@ -43,7 +44,8 @@ namespace Event_App
                                   reader["email"].ToString(),
                                   reader["password"].ToString(),
                                   reader["password"].ToString(),
-                                  reader["role"].ToString());
+                                  reader["role"].ToString(),
+                                  Convert.ToDateTime(reader["date_added"]));
             }
                 return null;
         }
@@ -69,7 +71,7 @@ namespace Event_App
             using var conn = new OleDbConnection(connectionString);
             conn.Open();
             using var cmd = new OleDbCommand(
-                "SELECT [username], [email], [password], [role] " +
+                "SELECT [username], [email], [password], [role],[date_added]  " +
                 "FROM users " +
                 "WHERE [email]=?", conn);
             cmd.Parameters.AddWithValue("?", email);
@@ -81,7 +83,8 @@ namespace Event_App
                                 reader["email"].ToString(),
                                 reader["password"].ToString(),
                                 reader["password"].ToString(),
-                                reader["role"].ToString());
+                                reader["role"].ToString(),
+                                Convert.ToDateTime(reader["date_added"]));
             }
             return null;
         }
@@ -90,7 +93,7 @@ namespace Event_App
             using var conn = new OleDbConnection(connectionString);
             conn.Open();
             using var cmd = new OleDbCommand(
-                "SELECT [username], [email], [password], [role] " +
+                "SELECT [username], [email], [password], [role] ,[date_added] " +
                 "FROM users " +
                 "WHERE [username]=?", conn);
             cmd.Parameters.AddWithValue("?", username);
@@ -102,7 +105,8 @@ namespace Event_App
                                   reader["email"].ToString(),
                                   reader["password"].ToString(),
                                   reader["password"].ToString(),
-                                  reader["role"].ToString());
+                                  reader["role"].ToString(),
+                                  Convert.ToDateTime(reader["date_added"]));
             }
             return null;
         }

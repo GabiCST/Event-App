@@ -116,7 +116,7 @@ namespace Event_App
                 var result = MessageBox.Show($"Are you sure you want to add the event '{ticket.Event}' to your favorite list?", "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.Yes)
                 {
-                    if (true)//)
+                    if (TicketRepository.AddTicketToFavorites(ticket))
                     { 
                         MessageBox.Show("Event added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
@@ -132,7 +132,7 @@ namespace Event_App
                 var result = MessageBox.Show($"Are you sure you want to purchase the ticket for '{ticket.Event}'?", "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.Yes)
                 {
-                    if (true)//)
+                    if (TicketRepository.PurchaseTicket(ticket))
                     {
                         MessageBox.Show("Event purchased successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 

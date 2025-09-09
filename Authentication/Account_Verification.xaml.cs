@@ -22,7 +22,7 @@ namespace Event_App
             using var conn = new OleDbConnection(App.Configuration["ConnectionStrings:DefaultConnection"]);
             conn.Open();
             using var cmd = new OleDbCommand(
-                "SELECT username, email, password, role " +
+                "SELECT [user_id],[username], [email], [password], [role],[date_added]  " +
                 "FROM users " +
                 "WHERE username=? AND email=?", conn);
             cmd.Parameters.AddWithValue("?", Username.Text);
@@ -36,8 +36,9 @@ namespace Event_App
                            reader["email"].ToString(),
                            reader["password"].ToString(),
                            reader["password"].ToString(),
-                           reader["role"].ToString()
-                           );
+                           reader["role"].ToString(),
+                           Convert.ToDateTime(reader["date_added"]));
+                          
             }
 
             else
