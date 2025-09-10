@@ -1,18 +1,7 @@
 ﻿using Event_App.Admin;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Controls; 
+using System.Windows.Media; 
 
 namespace Event_App
 {
@@ -107,19 +96,11 @@ namespace Event_App
             deleteButton.Click += (s, e) =>
             {
                 var result = MessageBox.Show($"Are you sure you want to refund the ticket for event '{ticket.Event}'?", "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.Yes)
+                if (result == MessageBoxResult.Yes && TicketRepository.RefundTicket(ticket))
                 {
-                    if (TicketRepository.RefundTicket(ticket))
-                    {
-                        EventsPanel.Children.Clear();
-                        LoadTickets();
-                        MessageBox.Show("Event refunded successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    }
-                    else
-                    {
-                        MessageBox.Show("Failed to refund the event.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                    EventsPanel.Children.Clear();
+                    LoadTickets();
+                    MessageBox.Show("Event refunded successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             };
 

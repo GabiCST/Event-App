@@ -77,6 +77,7 @@ namespace Event_App.Admin
                 int count = Convert.ToInt32(checkcmd.ExecuteScalar());
                 if (count > 0)
                 {
+                    MessageBox.Show("Ticket already in favorites.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                     return false;
                 }
             }
@@ -107,6 +108,24 @@ namespace Event_App.Admin
                     int rowsAffected = updatecmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
                     {
+                        MessageBox.Show("Ticket is sold out.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        transaction.Rollback();
+                        return false;
+                    }
+                }
+                using (var updateMoneyCmd = new OleDbCommand(
+                    "Update users " +
+                    "Set [money] = [money] - ? " +
+                    "Where user_id = ? AND [money] >= ?", conn, transaction))
+                {
+                    updateMoneyCmd.Parameters.AddWithValue("?", ticket.Price);
+                    updateMoneyCmd.Parameters.AddWithValue("?", UserSession.CurrentUser.Id);
+                    updateMoneyCmd.Parameters.AddWithValue("?", ticket.Price);
+
+                    int rowsAffected = updateMoneyCmd.ExecuteNonQuery();
+                    if (rowsAffected == 0)
+                    {
+                        MessageBox.Show("Insufficient funds to complete the purchase.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         transaction.Rollback();
                         return false;
                     }
@@ -125,6 +144,7 @@ namespace Event_App.Admin
             }
             catch (Exception)
             {
+                MessageBox.Show("Error processing purchase.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 transaction.Rollback();
                 return false;
             }
@@ -233,6 +253,22 @@ namespace Event_App.Admin
                     updatecmd.Parameters.AddWithValue("?", ticket.Id);
                     updatecmd.ExecuteNonQuery();
                 }
+                using (var updateMoneyCmd = new OleDbCommand(
+                   "Update users " +
+                   "Set [money] = [money] + ? " +
+                   "Where user_id = ?", conn, transaction))
+                {
+                    updateMoneyCmd.Parameters.AddWithValue("?", ticket.Price);
+                    updateMoneyCmd.Parameters.AddWithValue("?", UserSession.CurrentUser.Id); 
+
+                    int rowsAffected = updateMoneyCmd.ExecuteNonQuery();
+                    if (rowsAffected == 0)
+                    { 
+                        MessageBox.Show("Error processing refund.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        transaction.Rollback();
+                        return false;
+                    }
+                }
                 using (var deletecmd = new OleDbCommand(
                     "Delete " +
                     "From purchasedEvents "+
@@ -247,6 +283,7 @@ namespace Event_App.Admin
             }
             catch (Exception)
             {
+                MessageBox.Show("Error processing refund.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 transaction.Rollback();
                 return false;
             }
