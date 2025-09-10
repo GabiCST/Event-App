@@ -1,5 +1,4 @@
 ﻿using Event_App.Admin;
-using System;
 using System.Windows;
 
 namespace Event_App

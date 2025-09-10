@@ -16,7 +16,7 @@ namespace Event_App
         }
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            var user = new User(0,Username.Text, Email.Text, Password.Password, ConfPassword.Password, "User", DateTime.Now);
+            var user = new User(0,Username.Text, Email.Text, Password.Password, ConfPassword.Password, "User", DateTime.Now,0);
 
             string? validationError = user.UserIsValid();
             if (validationError != null)

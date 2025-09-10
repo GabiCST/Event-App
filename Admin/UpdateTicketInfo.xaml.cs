@@ -1,6 +1,4 @@
-﻿using System.Data.OleDb;
-using System.Net.Sockets;
-using System.Windows; 
+﻿using System.Windows; 
 namespace Event_App
 { 
     public partial class UpdateTicketInfo : Window

@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using System.Data.OleDb;
+﻿using System.Data.OleDb;
 
 namespace Event_App
 {
@@ -9,7 +8,7 @@ namespace Event_App
         private static readonly string connectionString = App.Configuration["ConnectionStrings:DefaultConnection"];
         public static bool AddUser(User user)
         {
-            if (FindByUsername(user.Username) != null || FindByEmail(user.Email) != null)
+            if (FindUser(user.Username,user.Email) != null)
                 return false;
 
             using var conn = new OleDbConnection(connectionString);
@@ -27,76 +26,44 @@ namespace Event_App
         }
         public static User? Authenticate(string usernameOrEmail, string password)
         {
-            using var conn = new OleDbConnection(connectionString);
-            conn.Open();
-            using var cmd = new OleDbCommand(
-                "SELECT [user_id],[username], [email], [password],[role],[date_added] " +
-                "FROM users " +
-                "WHERE ([username]=? or [email]=?) AND [password]=?", conn);
-            cmd.Parameters.AddWithValue("?", usernameOrEmail);
-            cmd.Parameters.AddWithValue("?", usernameOrEmail);
-            cmd.Parameters.AddWithValue("?", password);
-            using var reader = cmd.ExecuteReader();
-            if (reader.Read())
-            {
-                return new User(Convert.ToInt32(reader["user_id"]),
-                                  reader["username"].ToString(),
-                                  reader["email"].ToString(),
-                                  reader["password"].ToString(),
-                                  reader["password"].ToString(),
-                                  reader["role"].ToString(),
-                                  Convert.ToDateTime(reader["date_added"]));
-            }
-                return null;
+            var user = FindUser(usernameOrEmail, usernameOrEmail);
+            if(user != null && user.Password == password) return user;
+            return null;
         }
 
         public static bool PasswordChange(User user, string password)
         {
+            var existinguser = FindUser(user.Username, user.Email);
+            if (existinguser == null) return false;
             using var conn = new OleDbConnection(connectionString);
             conn.Open();
             using var cmd = new OleDbCommand(
                 "UPDATE users " +
                 "SET [password]=? " +
-                "WHERE [username]=? AND [email]=?", conn);
+                "WHERE [user_id]=?", conn);
             cmd.Parameters.AddWithValue("?", password); 
-            cmd.Parameters.AddWithValue("?", user.Username);
-            cmd.Parameters.AddWithValue("?", user.Email);
+            cmd.Parameters.AddWithValue("?", existinguser.Id);
             int rows = cmd.ExecuteNonQuery();
             return rows > 0;
-        }
-
-
-        private static User? FindByEmail(string email)
+        } 
+        private static User? FindUser(string? username = null, string? email = null)
         {
+            if(string.IsNullOrEmpty(username) && string.IsNullOrEmpty(email))
+                throw new ArgumentException("At least one parameter must be provided.");
             using var conn = new OleDbConnection(connectionString);
             conn.Open();
-            using var cmd = new OleDbCommand(
-                "SELECT [username], [email], [password], [role],[date_added]  " +
-                "FROM users " +
-                "WHERE [email]=?", conn);
-            cmd.Parameters.AddWithValue("?", email);
-            using var reader = cmd.ExecuteReader();
-            if (reader.Read())
-            {
-                return new User(Convert.ToInt32(reader["user_id"]),
-                                reader["username"].ToString(),
-                                reader["email"].ToString(),
-                                reader["password"].ToString(),
-                                reader["password"].ToString(),
-                                reader["role"].ToString(),
-                                Convert.ToDateTime(reader["date_added"]));
-            }
-            return null;
-        }
-        private static User? FindByUsername(string username)
-        {
-            using var conn = new OleDbConnection(connectionString);
-            conn.Open();
-            using var cmd = new OleDbCommand(
-                "SELECT [username], [email], [password], [role] ,[date_added] " +
-                "FROM users " +
-                "WHERE [username]=?", conn);
-            cmd.Parameters.AddWithValue("?", username);
+            string query = 
+                "SELECT [user_id],[username], [email], [password], [role],[date_added],[money] " +
+                "FROM users WHERE ";
+            var conditions = new List<string>();
+            if (!string.IsNullOrEmpty(username))  conditions.Add("[username]=?");
+            if (!string.IsNullOrEmpty(email))     conditions.Add("[email]=?");
+            
+            query += string.Join(" OR ", conditions);
+            
+            using var cmd = new OleDbCommand(query, conn);
+            if (!string.IsNullOrEmpty(username))  cmd.Parameters.AddWithValue("?", username);
+            if (!string.IsNullOrEmpty(email)) cmd.Parameters.AddWithValue("?", email);
             using var reader = cmd.ExecuteReader();
             if (reader.Read())
             {
@@ -106,9 +73,35 @@ namespace Event_App
                                   reader["password"].ToString(),
                                   reader["password"].ToString(),
                                   reader["role"].ToString(),
-                                  Convert.ToDateTime(reader["date_added"]));
+                                  Convert.ToDateTime(reader["date_added"]),
+                                  Convert.ToInt32(reader["money"]));
             }
             return null;
         }
+        
+
+        public static List<User> GetAllUsers()
+        {
+            List<User> users = new();
+            using var conn = new OleDbConnection(connectionString);
+            conn.Open();
+            using var cmd = new OleDbCommand(
+                "SELECT [user_id],[username], [email], [password], [role],[date_added],[money] " +
+                "FROM users", conn);
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                users.Add(new User(Convert.ToInt32(reader["user_id"]),
+                                  reader["username"].ToString(),
+                                  reader["email"].ToString(),
+                                  reader["password"].ToString(),
+                                  reader["password"].ToString(),
+                                  reader["role"].ToString(),
+                                  Convert.ToDateTime(reader["date_added"]),
+                                  Convert.ToInt32(reader["money"])));
+            }
+            return users;
+        }
+        
     }
 }

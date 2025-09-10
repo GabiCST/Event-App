@@ -1,19 +1,7 @@
 ﻿using Event_App.Admin;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Event_App
 { 
@@ -114,34 +102,14 @@ namespace Event_App
             addfavorite.Click += (s, e) =>
             {
                 var result = MessageBox.Show($"Are you sure you want to add the event '{ticket.Event}' to your favorite list?", "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.Yes)
-                {
-                    if (TicketRepository.AddTicketToFavorites(ticket))
-                    { 
+                if (result == MessageBoxResult.Yes && TicketRepository.AddTicketToFavorites(ticket))
                         MessageBox.Show("Event added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    }
-                    else
-                    {
-                        MessageBox.Show("Failed to add the event.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
             };
             ticketpur.Click += (s, e) =>
             {
                 var result = MessageBox.Show($"Are you sure you want to purchase the ticket for '{ticket.Event}'?", "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.Yes)
-                {
-                    if (TicketRepository.PurchaseTicket(ticket))
-                    {
-                        MessageBox.Show("Event purchased successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    }
-                    else
-                    {
-                        MessageBox.Show("Failed to purchase ticket for the event.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
+                if (result == MessageBoxResult.Yes && TicketRepository.PurchaseTicket(ticket)) 
+                    MessageBox.Show("Event purchased successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             };
 
             panel.Children.Add(addfavorite);

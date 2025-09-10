@@ -1,5 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using System.Windows;
+﻿using System.Windows;
 using System.Data.OleDb;
 namespace Event_App
 {
@@ -22,7 +21,7 @@ namespace Event_App
             using var conn = new OleDbConnection(App.Configuration["ConnectionStrings:DefaultConnection"]);
             conn.Open();
             using var cmd = new OleDbCommand(
-                "SELECT [user_id],[username], [email], [password], [role],[date_added]  " +
+                "SELECT [user_id],[username], [email], [password], [role],[date_added],[money]  " +
                 "FROM users " +
                 "WHERE username=? AND email=?", conn);
             cmd.Parameters.AddWithValue("?", Username.Text);
@@ -37,7 +36,8 @@ namespace Event_App
                            reader["password"].ToString(),
                            reader["password"].ToString(),
                            reader["role"].ToString(),
-                           Convert.ToDateTime(reader["date_added"]));
+                           Convert.ToDateTime(reader["date_added"]),
+                           Convert.ToInt32(reader["money"]));
                           
             }
 

@@ -1,6 +1,4 @@
-﻿
-using System.Data.OleDb;
-namespace Event_App
+﻿namespace Event_App
 {
     public static class UserSession
     {

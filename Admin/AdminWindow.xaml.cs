@@ -50,6 +50,14 @@ namespace Event_App
         }
         private void ViewCreatedAccounts_Button(object sender, RoutedEventArgs e)
         { 
+            if (UserSession.CurrentUser == null || !UserSession.CurrentUser.Role.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Access denied. Admin privileges required.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            CreatedAccounts createdAccounts = new();
+            createdAccounts.Show();
+            this.Close();
         }
     }
 }

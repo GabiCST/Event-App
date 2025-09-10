@@ -2,7 +2,7 @@
 
 namespace Event_App
 {
-    public class User(int id, string username, string email, string password, string confpassword, string role, DateTime? date)
+    public class User(int id, string username, string email, string password, string confpassword, string role, DateTime? date, int money)
     {
         private const int UserMinLength = 4;
         private const int UserMaxLength = 20;
@@ -17,6 +17,7 @@ namespace Event_App
         public string ConfirmPassword { get; set; } = confpassword; 
         public string Role { get; set; } = role;
         public DateTime? Date { get; set; } = date;
+        public int Money { get; set; } = money;
         public string? UserIsValid()
         {
             if (string.IsNullOrWhiteSpace(Username))
